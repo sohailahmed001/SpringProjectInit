@@ -28,10 +28,10 @@ public class AppUser {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "user_authority",
+            name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "authority_id"))
-    private Set<Authority> authorities;
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 
     public UUID getId() {
         return id;
@@ -65,11 +65,11 @@ public class AppUser {
         this.createdDate = createdDate;
     }
 
-    public Set<Authority> getAuthorities() {
-        return authorities;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setAuthorities(Set<Authority> authorities) {
-        this.authorities = authorities;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

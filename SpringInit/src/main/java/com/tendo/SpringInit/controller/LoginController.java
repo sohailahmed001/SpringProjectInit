@@ -2,7 +2,9 @@ package com.tendo.SpringInit.controller;
 
 import com.tendo.SpringInit.model.AppUser;
 import com.tendo.SpringInit.model.Authority;
+import com.tendo.SpringInit.model.Role;
 import com.tendo.SpringInit.repository.AuthorityRepository;
+import com.tendo.SpringInit.repository.RoleRepository;
 import com.tendo.SpringInit.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +18,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
 
 @RestController
 public class LoginController {
@@ -28,22 +28,24 @@ public class LoginController {
     @Autowired
     private AuthorityRepository authorityRepository;
     @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
     public ResponseEntity<AppUser> registerUser(@RequestBody AppUser user) {
         try {
             String hashPwd = this.passwordEncoder.encode(user.getPassword());
-            Set<Authority> userAuthorities = new HashSet<>();
-            List<Authority> authorities = this.authorityRepository.findAuthorityByName("ADMIN");
+            Set<Role> userRoles = new HashSet<>();
+            List<Role> roles = this.roleRepository.findRoleByName("ROLE_ADMIN");
 
-            if(!authorities.isEmpty()) {
-                userAuthorities.add(authorities.get(0));
+            if(!roles.isEmpty()) {
+                userRoles.add(roles.get(0));
             }
 
             user.setPassword(hashPwd);
             user.setCreatedDate(new Date());
-            user.setAuthorities(userAuthorities);
+            user.setRoles(userRoles);
             AppUser savedUser = this.userService.saveUser(user);
 
             return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
@@ -70,6 +72,28 @@ public class LoginController {
         }
         catch (Exception ex) {
             throw new RuntimeException("Unable to create authority due to " + ex.getMessage());
+        }
+    }
+
+    @PostMapping("/addRole")
+    public ResponseEntity<Role> addRole(@RequestBody Role role) {
+        Role savedRole = null;
+
+        try {
+//            Set<Authority> authorities = role.getAuthorities();
+//
+//            for(Authority auth: authorities) {
+//                Optional<Authority> authorityOptional = this.authorityRepository.findById(auth.getId());
+//
+//                if(authorityOptional.isPresent()) {
+//
+//                }
+//            }
+            savedRole = this.roleRepository.save(role);
+            return new ResponseEntity<>(savedRole, HttpStatus.CREATED);
+        }
+        catch (Exception ex) {
+            throw new RuntimeException("Unable to create role due to " + ex.getMessage());
         }
     }
 

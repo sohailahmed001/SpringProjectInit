@@ -1,6 +1,7 @@
 package com.tendo.SpringInit.service;
 
 import com.tendo.SpringInit.model.AppUser;
+import com.tendo.SpringInit.model.Role;
 import com.tendo.SpringInit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,9 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -21,10 +22,16 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<AppUser> userOptional = getUserByUsername(username);
+        try {
+            List<AppUser> usersList = this.userRepository.findByUsernameWithRolesAndAuthorities(username);
+            Optional<AppUser> userOptional = Optional.ofNullable(usersList).map(users -> users.get(0));
 
-        if(userOptional.isPresent()) {
-            return userOptional.map(user -> new User(user.getUsername(), user.getPassword(), getAuthorities(user))).get();
+            if (userOptional.isPresent()) {
+                return userOptional.map(user -> new User(user.getUsername(), user.getPassword(), getGrantedAuthorities(user))).get();
+            }
+        }
+        catch (Exception e) {
+            throw new UsernameNotFoundException("Unable to fetch user: " + username + " due to " + e.getMessage());
         }
         throw new UsernameNotFoundException("User Details not found for username: " + username);
     }
@@ -43,7 +50,13 @@ public class UserService implements UserDetailsService {
         return this.userRepository.save(user);
     }
 
-    private List<SimpleGrantedAuthority> getAuthorities(AppUser user) {
-        return user.getAuthorities().stream().map(auth -> new SimpleGrantedAuthority(auth.getName())).collect(Collectors.toList());
+    private List<SimpleGrantedAuthority> getGrantedAuthorities(AppUser user) {
+        List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
+
+        for(Role role: user.getRoles()) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+            grantedAuthorities.addAll(role.getAuthorities().stream().map(auth -> new SimpleGrantedAuthority(auth.getName())).toList());
+        }
+        return grantedAuthorities;
     }
 }
