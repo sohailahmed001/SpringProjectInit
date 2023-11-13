@@ -14,7 +14,7 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 
 @Configuration
 public class SecurityConfig {
-    private static final String[] AUTHENTICATED_APIS = { "/test" };
+    private static final String[] AUTHENTICATED_APIS = {  };
     private static final String[] PERMITTED_APIS = { "/register", "/userLogin", "/addAuthority" };
     private static final String[] CSRF_IGNORE_APIS = { "/register", "/addAuthority" };
 
@@ -27,8 +27,10 @@ public class SecurityConfig {
                 .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers(CSRF_IGNORE_APIS)
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
-                .authorizeHttpRequests(requests -> requests.requestMatchers(AUTHENTICATED_APIS).authenticated()
-                                                        .requestMatchers(PERMITTED_APIS).permitAll())
+                .authorizeHttpRequests(requests -> requests
+                        .requestMatchers("/test").hasAuthority("USER")
+                        .requestMatchers(AUTHENTICATED_APIS).authenticated()
+                        .requestMatchers(PERMITTED_APIS).permitAll())
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());
 

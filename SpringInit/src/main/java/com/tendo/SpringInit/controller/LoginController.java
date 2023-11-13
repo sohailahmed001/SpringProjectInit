@@ -4,6 +4,8 @@ import com.tendo.SpringInit.model.AppUser;
 import com.tendo.SpringInit.model.Authority;
 import com.tendo.SpringInit.repository.AuthorityRepository;
 import com.tendo.SpringInit.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +23,6 @@ import java.util.Set;
 
 @RestController
 public class LoginController {
-
     @Autowired
     private UserService userService;
     @Autowired
@@ -36,7 +37,7 @@ public class LoginController {
             Set<Authority> userAuthorities = new HashSet<>();
             List<Authority> authorities = this.authorityRepository.findAuthorityByName("ADMIN");
 
-            if(authorities.size() > 0) {
+            if(!authorities.isEmpty()) {
                 userAuthorities.add(authorities.get(0));
             }
 

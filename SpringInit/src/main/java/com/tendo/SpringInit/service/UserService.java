@@ -23,21 +23,18 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<AppUser> userOptional = getUserByUsername(username);
 
-        if(userOptional.isPresent())
-        {
-            return userOptional.map((user) -> new User(user.getUsername(), user.getPassword(), getAuthorities(user))).get();
+        if(userOptional.isPresent()) {
+            return userOptional.map(user -> new User(user.getUsername(), user.getPassword(), getAuthorities(user))).get();
         }
         throw new UsernameNotFoundException("User Details not found for username: " + username);
     }
 
-    public Optional<AppUser> getUserByUsername(String username)
-    {
+    public Optional<AppUser> getUserByUsername(String username) {
         try {
             List<AppUser> usersList = this.userRepository.findByUsername(username);
             return Optional.ofNullable(usersList).map(users -> users.get(0));
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             return Optional.empty();
         }
     }
