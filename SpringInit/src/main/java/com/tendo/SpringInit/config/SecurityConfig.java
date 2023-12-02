@@ -20,14 +20,17 @@ import java.util.Collections;
 import java.util.List;
 
 @Configuration
-public class SecurityConfig {
+public class SecurityConfig
+{
+
     private static final String[] AUTHENTICATED_APIS = {  };
     private static final String[] GET_PERMITTED_APIS = { "/api/login" };
     private static final String[] POST_PERMITTED_APIS = { "/api/register", "/api/authority", "/api/role" };
     private static final String[] CSRF_IGNORE_APIS = { "/register", "/addAuthority", "/addRole" };
 
     @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception
+    {
         CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
         requestHandler.setCsrfRequestAttributeName("_csrf");
 

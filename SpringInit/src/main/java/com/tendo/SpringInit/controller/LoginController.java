@@ -20,25 +20,28 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api")
-public class LoginController {
+public class LoginController
+{
     @Autowired
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<AppUser> registerUser(@RequestBody AppUser user) {
-        AppUser savedUser = null;
-
-        try {
-            savedUser = this.userService.createNewUser(user);
+    public ResponseEntity<AppUser> registerUser(@RequestBody AppUser user)
+    {
+        try
+        {
+            AppUser savedUser = this.userService.createNewUser(user);
             return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             throw new RuntimeException("Unable to register user due to " + ex.getMessage());
         }
     }
 
     @GetMapping("/login")
-    public ResponseEntity<AppUser> getUserAfterSuccessfulLogin(Authentication authentication) {
+    public ResponseEntity<AppUser> getUserAfterSuccessfulLogin(Authentication authentication)
+    {
         return this.userService.getUserByUsername(authentication.getName())
                 .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found for username: " + authentication.getName()));

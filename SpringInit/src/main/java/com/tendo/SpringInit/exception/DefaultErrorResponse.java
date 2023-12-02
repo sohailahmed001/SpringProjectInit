@@ -8,7 +8,8 @@ public class DefaultErrorResponse {
     public DefaultErrorResponse() {
     }
 
-    public DefaultErrorResponse(int status, String message, long timestamp) {
+    public DefaultErrorResponse(int status, String message, long timestamp)
+    {
         this.status = status;
         this.message = message;
         this.timestamp = timestamp;

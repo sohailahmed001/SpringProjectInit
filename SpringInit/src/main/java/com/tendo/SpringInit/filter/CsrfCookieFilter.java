@@ -8,15 +8,19 @@ import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
+
 public class CsrfCookieFilter extends OncePerRequestFilter {
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException
+    {
+        CsrfToken   csrfToken   =   (CsrfToken) request.getAttribute(CsrfToken.class.getName());
 
-        if(csrfToken.getHeaderName() != null) {
+        if(csrfToken.getHeaderName() != null)
+        {
             response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
         }
+
         filterChain.doFilter(request, response);
     }
 }
