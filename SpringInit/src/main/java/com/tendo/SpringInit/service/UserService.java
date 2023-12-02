@@ -20,10 +20,13 @@ import java.util.*;
 public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private AuthorityRepository authorityRepository;
+
     @Autowired
     private RoleRepository roleRepository;
+
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -52,7 +55,8 @@ public class UserService implements UserDetailsService {
     {
         try
         {
-            List<AppUser> usersList = this.userRepository.findByUsername(username);
+            List<AppUser>   usersList   =   this.userRepository.findByUsername(username);
+
             return Optional.ofNullable(usersList).map(users -> users.get(0));
         }
         catch (Exception ex)
@@ -86,9 +90,9 @@ public class UserService implements UserDetailsService {
 
     private List<SimpleGrantedAuthority> getGrantedAuthorities(AppUser user)
     {
-        List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
+        List<SimpleGrantedAuthority>    grantedAuthorities  =   new ArrayList<>();
 
-        for(Role role: user.getRoles())
+        for(Role role : user.getRoles())
         {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
             grantedAuthorities.addAll(role.getAuthorities().stream().map(auth -> new SimpleGrantedAuthority(auth.getName())).toList());
