@@ -14,40 +14,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
 @RestController
+@RequestMapping("/api")
 public class LoginController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private AuthorityRepository authorityRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
     public ResponseEntity<AppUser> registerUser(@RequestBody AppUser user) {
+        AppUser savedUser = null;
+
         try {
-            String hashPwd = this.passwordEncoder.encode(user.getPassword());
-            Set<Role> userRoles = new HashSet<>();
-            List<Role> roles = this.roleRepository.findRoleByName("ROLE_ADMIN");
-
-            if(!roles.isEmpty()) {
-                userRoles.add(roles.get(0));
-            }
-
-            user.setPassword(hashPwd);
-            user.setCreatedDate(new Date());
-            user.setRoles(userRoles);
-            AppUser savedUser = this.userService.saveUser(user);
-
+            savedUser = this.userService.createNewUser(user);
             return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
         }
         catch (Exception ex) {
@@ -55,46 +37,11 @@ public class LoginController {
         }
     }
 
-    @GetMapping("/userLogin")
+    @GetMapping("/login")
     public ResponseEntity<AppUser> getUserAfterSuccessfulLogin(Authentication authentication) {
         return this.userService.getUserByUsername(authentication.getName())
                 .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found for username: " + authentication.getName()));
-    }
-
-    @PostMapping("/addAuthority")
-    public ResponseEntity<Authority> addAuthority(@RequestBody Authority authority) {
-        Authority savedAuthority = null;
-
-        try {
-            savedAuthority = this.authorityRepository.save(authority);
-            return new ResponseEntity<>(savedAuthority, HttpStatus.CREATED);
-        }
-        catch (Exception ex) {
-            throw new RuntimeException("Unable to create authority due to " + ex.getMessage());
-        }
-    }
-
-    @PostMapping("/addRole")
-    public ResponseEntity<Role> addRole(@RequestBody Role role) {
-        Role savedRole = null;
-
-        try {
-//            Set<Authority> authorities = role.getAuthorities();
-//
-//            for(Authority auth: authorities) {
-//                Optional<Authority> authorityOptional = this.authorityRepository.findById(auth.getId());
-//
-//                if(authorityOptional.isPresent()) {
-//
-//                }
-//            }
-            savedRole = this.roleRepository.save(role);
-            return new ResponseEntity<>(savedRole, HttpStatus.CREATED);
-        }
-        catch (Exception ex) {
-            throw new RuntimeException("Unable to create role due to " + ex.getMessage());
-        }
     }
 
     @GetMapping("/test")

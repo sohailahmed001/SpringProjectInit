@@ -1,7 +1,10 @@
 package com.tendo.SpringInit.service;
 
 import com.tendo.SpringInit.model.AppUser;
+import com.tendo.SpringInit.model.Authority;
 import com.tendo.SpringInit.model.Role;
+import com.tendo.SpringInit.repository.AuthorityRepository;
+import com.tendo.SpringInit.repository.RoleRepository;
 import com.tendo.SpringInit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,16 +12,21 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
-
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private AuthorityRepository authorityRepository;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -46,6 +54,20 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public AppUser createNewUser(AppUser newUser) {
+        String hashPwd = this.passwordEncoder.encode(newUser.getPassword());
+        Set<Role> userRoles = new HashSet<>();
+        List<Role> roles = this.roleRepository.findRoleByName("ROLE_ADMIN"); // Adding Admin Role to new user
+
+        if(!roles.isEmpty()) {
+            userRoles.add(roles.get(0));
+        }
+        newUser.setPassword(hashPwd);
+        newUser.setCreatedDate(new Date());
+        newUser.setRoles(userRoles);
+        return saveUser(newUser);
+    }
+
     public AppUser saveUser(AppUser user) {
         return this.userRepository.save(user);
     }
@@ -58,5 +80,13 @@ public class UserService implements UserDetailsService {
             grantedAuthorities.addAll(role.getAuthorities().stream().map(auth -> new SimpleGrantedAuthority(auth.getName())).toList());
         }
         return grantedAuthorities;
+    }
+
+    public Authority saveAuthority(Authority newAuthority) {
+        return this.authorityRepository.save(newAuthority);
+    }
+
+    public Role saveRole(Role newRole) {
+        return this.roleRepository.save(newRole);
     }
 }

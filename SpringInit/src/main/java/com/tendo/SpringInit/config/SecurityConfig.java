@@ -4,6 +4,7 @@ import com.tendo.SpringInit.filter.CsrfCookieFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -21,7 +22,8 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
     private static final String[] AUTHENTICATED_APIS = {  };
-    private static final String[] PERMITTED_APIS = { "/register", "/userLogin", "/addAuthority", "/addRole" };
+    private static final String[] GET_PERMITTED_APIS = { "/api/login" };
+    private static final String[] POST_PERMITTED_APIS = { "/api/register", "/api/authority", "/api/role" };
     private static final String[] CSRF_IGNORE_APIS = { "/register", "/addAuthority", "/addRole" };
 
     @Bean
@@ -47,10 +49,10 @@ public class SecurityConfig {
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/test").hasAuthority("USER")
-                        .requestMatchers(AUTHENTICATED_APIS).authenticated()
-                        .requestMatchers(PERMITTED_APIS).permitAll())
-                .formLogin(Customizer.withDefaults())
+                        .requestMatchers(HttpMethod.GET, "/api/test").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.GET, AUTHENTICATED_APIS).authenticated()
+                        .requestMatchers(HttpMethod.GET, GET_PERMITTED_APIS).permitAll()
+                        .requestMatchers(HttpMethod.POST, POST_PERMITTED_APIS).permitAll())
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();
