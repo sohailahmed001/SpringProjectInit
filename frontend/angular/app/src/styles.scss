@@ -17,6 +17,13 @@ html {
     border-color: var(--primary-theme-color) !important;
 }
 
+p-progressSpinner{
+    bottom: calc(100vh/2);
+    right: calc(100vw/2);
+    position: fixed !important;
+}
+
+
 a{
     color:  var(--primary-theme-color);
 }
