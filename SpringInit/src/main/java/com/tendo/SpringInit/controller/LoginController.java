@@ -31,12 +31,12 @@ public class LoginController
         }
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<AppUser> getUserAfterSuccessfulLogin(@RequestBody LoginUserDTO loginUserDTO)
     {
         return this.userService.getUserByUsername(loginUserDTO.getUsername())
                 .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
-                .orElseThrow(() -> new UsernameNotFoundException("User not found for username: " + loginUserDTO.getUsername()));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found for username"));
     }
 
     @GetMapping("/test")

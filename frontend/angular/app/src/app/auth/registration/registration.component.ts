@@ -6,35 +6,34 @@ import { UtilsService } from 'src/app/utils/utils.service';
   selector: 'app-registration',
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss'],
-  encapsulation: ViewEncapsulation.Emulated
-
 })
+
 export class RegistrationComponent {
-  firstname : string;
-  lastname: string;
   username: string;
   password: string;
-  submitted = false;
   showLoader = false;
 
-  constructor( private utilsService : UtilsService , 
-              private router : Router){}
+  constructor(public utilsService: UtilsService,
+    private router: Router) { }
 
   onSignInClick() {
-    this.submitted = true;
-    
+    this.utilsService.clearErrorMessages();
+
+    this.showLoader = true;
+
     let userObj = {
-      username : this.username,
-      password : this.password,
+      username: this.username,
+      password: this.password,
     }
 
     this.utilsService.saveObjects("api/register", userObj).subscribe(
       {
         next: (data) => {
-          this.utilsService.handleSuccessMessage("Registration Successfull");
+          this.showLoader = false;
           this.router.navigate(['login']);
         },
-        error : (er) => {
+        error: (er) => {
+          this.showLoader = false;
           console.log("error called");
           this.utilsService.handleError(er);
         }

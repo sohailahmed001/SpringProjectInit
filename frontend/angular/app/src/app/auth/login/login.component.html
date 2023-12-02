@@ -1,6 +1,8 @@
 <form #myform="ngForm">
-    <div class="card flex justify-content-center">
+    <div class="card flex justify-content-center" [style]="{'width' : '360px'}">
         <p-card header="Login Form" subheader="Please enter you login details">
+            <p-messages [(value)]="utilsService.errorMessages" [enableService]="false"></p-messages>
+
             <div class="field">
                 <label>Username*</label>
                 <input pInputText id="username" type="text" [(ngModel)]="username" required="required" name="username" class="w-full"/>
@@ -11,7 +13,7 @@
             </div>
 
             <div class="field flex justify-content-center">
-                <button pButton pRipple  icon="pi pi-sign-in" iconpos="right" label="Login" class="p-button-sm ui-btn-primary shadow-2" (onClick)="onLoginClick()"></button>
+                <button pButton icon="pi pi-sign-in" iconpos="right" label="Login" class="p-button-sm ui-btn-primary shadow-2 border-round-3xl" (click)="onLoginClick()"></button>
             </div>
 
             <div class="field flex justify-content-center">

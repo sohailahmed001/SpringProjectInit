@@ -12,16 +12,16 @@ import { UtilsService } from 'src/app/utils/utils.service';
 export class LoginComponent {
   username: string;
   password: string;
-  submitted = false;
   showLoader = false;
 
   constructor(private router: Router,
     private authService: AuthService, 
-    private utilsService: UtilsService) { }
+    public utilsService: UtilsService) { }
 
   onLoginClick() {
+    this.utilsService.clearErrorMessages();
+
     this.showLoader = true;
-    this.submitted = true;
 
     const loginObj = {
       username: this.username,

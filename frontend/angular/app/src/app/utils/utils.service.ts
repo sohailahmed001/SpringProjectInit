@@ -44,6 +44,10 @@ export class UtilsService {
     this.msgsService.add({ severity: 'success', detail: detailMessage });
   }
 
+  clearErrorMessages(){
+    this.errorMessages = [];
+  }
+
   handleError(error: any = null) {
     let errorMessage = 'Error Occured';
 

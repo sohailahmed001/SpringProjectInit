@@ -8,6 +8,7 @@ import { CardModule } from 'primeng/card';
 import { UtilsService } from './utils/utils.service';
 import { HomeComponent } from './components/home/home.component';
 import { MessagesModule } from 'primeng/messages';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import { MessagesModule } from 'primeng/messages';
     AuthModule,
     MessagesModule
   ],
-  providers: [UtilsService],
+  providers: [MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
