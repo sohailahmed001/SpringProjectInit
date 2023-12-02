@@ -1,0 +1,24 @@
+<form #myform="ngForm">
+    <div class="card flex justify-content-center">
+        <p-card header="Registration Form" subheader="Please enter your details">
+            <div class="field">
+                <label>Username*</label>
+                <input pInputText id="username" type="text" [(ngModel)]="username" required="required" name="username" class="w-full"/>
+            </div>
+            <div class="field">
+                <label>Password*</label>
+                <input pInputText [(ngModel)]="password" name="password" type="password" class="w-full"/>
+            </div>
+
+            <div class="field flex justify-content-center">
+                <button pButton pRipple  icon="pi pi-sign-in" iconpos="right" label="Sign in" class="p-button-sm ui-btn-primary shadow-2" (onClick)="onSignInClick()"></button>
+            </div>
+
+            <div class="field flex justify-content-center">
+                <label>Already a user ?<a [routerLink] ="['login']"> Please Click here to login</a></label>
+            </div>
+        </p-card>
+    </div>
+</form>
+<p-progressSpinner *ngIf="showLoader"></p-progressSpinner>
+

@@ -1,1 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+@import '/src/assets/themes/color.scss';
+
+
+body,
+html {
+    margin: 0;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+}
+
+.ui-btn-primary, th {
+    background-color: var(--primary-theme-color);
+    color: #ffffff;
+    border-color: var(--primary-theme-color) !important;
+}
+
+a{
+    color:  var(--primary-theme-color);
+}
