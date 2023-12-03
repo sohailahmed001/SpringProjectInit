@@ -3,40 +3,48 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { AppUser } from '../model/app-user.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    private token: any;
+    private jwtToken: string;
     baseURL = environment.baseURL;
     errorMessages: any[];
+    PROJECT_PREFIX: string = environment.PROJECT_PREFIX;
 
     constructor(private http: HttpClient) { }
 
-    login(loginObj : any): Observable<any> {
-        return this.http.post(this.baseURL + "api/login", loginObj)
+    login(userDetails: AppUser): Observable<any> {
+        const httpHeaders = new HttpHeaders({
+            'Authorization': 'Basic ' + window.btoa(userDetails.username + ':' + userDetails.password),
+        });
+
+        return this.http.get(this.baseURL + "api/login", { observe: 'response',withCredentials: true, headers: httpHeaders })
             .pipe(
                 map((data: any) => {
                     console.log(data);
+                    return data;
                 })
             );
     }
 
     logout(): void {
-        this.token = null;
-        localStorage.removeItem('token');
+        this.jwtToken = null;
+        sessionStorage.removeItem(this.PROJECT_PREFIX + 'Authorization');
+        sessionStorage.removeItem(this.PROJECT_PREFIX + 'XSRF-TOKEN');
     }
 
-    getToken(): string {
-        if (!this.token) {
-            this.token = localStorage.getItem('token');
+    getJWTToken(): string {
+        if (!this.jwtToken) {
+            this.jwtToken = sessionStorage.getItem(this.PROJECT_PREFIX + 'Authorization');
         }
-        return this.token;
+        return this.jwtToken;
     }
 
     isLoggedIn(): boolean {
-        const token = this.getToken();
+        const token = this.getJWTToken();
         return token != null;
     }
 
@@ -45,16 +53,13 @@ export class AuthService {
     }
 
     // add this method to all HTTP requests that require authentication
-    addTokenToHeader(): HttpHeaders {
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json'
-        });
+    addJWTTokenToHeader(): HttpHeaders {
+        const headers = new HttpHeaders();
+        const jwtToken = this.getJWTToken();
 
-        const token = this.getToken();
-        if (token) {
-            return headers.set('Authorization', 'Bearer ' + token);
+        if (jwtToken) {
+            return headers.append(this.PROJECT_PREFIX + 'Authorization', jwtToken);
         }
-
         return headers;
     }
 }
