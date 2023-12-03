@@ -9,6 +9,8 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageService } from 'primeng/api';
 import { FullLayoutComponentModule } from './utils/full-layout-component/full-layout-component.module';
 import { SearchUserComponent } from './components/search-user/search-user.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { XhrInterceptor } from './interceptors/app.request.interceptor';
 
 @NgModule({
   declarations: [
@@ -21,9 +23,16 @@ import { SearchUserComponent } from './components/search-user/search-user.compon
     AppRoutingModule,
     AuthModule,
     MessagesModule,
-    FullLayoutComponentModule
+    FullLayoutComponentModule,
   ],
-  providers: [MessageService],
+  providers: [
+    {
+      provide : HTTP_INTERCEPTORS,
+      useClass : XhrInterceptor,
+      multi : true
+    },
+    MessageService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

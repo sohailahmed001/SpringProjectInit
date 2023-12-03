@@ -39,11 +39,6 @@ export class SidebarComponent {
         }
       ]
       },
-      {
-        label: 'Logout',
-        icon: 'fa fa-power-off',
-        routerLink:'/login'
-      },
     ];
 
     this.verticalItems = this.items;

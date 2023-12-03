@@ -12,7 +12,7 @@ export class XhrInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    let httpHeaders = this.authService.addJWTTokenToHeader();
+    let httpHeaders = this.authService.addJWTTokenToHeader(req.headers);
 
     const xsrfToken = sessionStorage.getItem(this.PROJECT_PREFIX + 'XSRF-TOKEN');
 

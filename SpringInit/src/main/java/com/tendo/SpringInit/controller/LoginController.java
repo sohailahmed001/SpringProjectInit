@@ -1,6 +1,5 @@
 package com.tendo.SpringInit.controller;
 
-import com.tendo.SpringInit.dto.LoginUserDTO;
 import com.tendo.SpringInit.model.AppUser;
 import com.tendo.SpringInit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

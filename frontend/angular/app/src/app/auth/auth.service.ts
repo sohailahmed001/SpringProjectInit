@@ -53,8 +53,7 @@ export class AuthService {
     }
 
     // add this method to all HTTP requests that require authentication
-    addJWTTokenToHeader(): HttpHeaders {
-        const headers = new HttpHeaders();
+    addJWTTokenToHeader(headers: HttpHeaders): HttpHeaders {
         const jwtToken = this.getJWTToken();
 
         if (jwtToken) {

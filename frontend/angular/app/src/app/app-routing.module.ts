@@ -6,6 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LayoutComponent } from './auth/layout/layout.component';
 import { FullLayoutComponent } from './utils/full-layout-component/full-layout/full-layout.component';
 import { SearchUserComponent } from './components/search-user/search-user.component';
+import { authRouteGuard } from './routeguards/auth.routeguard';
 
 const routes: Routes = [
   {
@@ -20,10 +21,12 @@ const routes: Routes = [
       {
         path: 'home',
         component: HomeComponent,
+        canActivate: [authRouteGuard]
       },
       {
         path: 'search-user',
-        component: SearchUserComponent
+        component: SearchUserComponent,
+        canActivate: [authRouteGuard]
       }
     ]
   },
