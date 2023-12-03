@@ -1,0 +1,11 @@
+<div style="height: 100%; width: 100%; display: flex;">
+    <div class="logo">
+        <img class="logo-img" src="assets/images/Fila-Logo.png" >
+    </div>
+    <div class="menu-btn">
+        <p-button [ngClass]="{'left-icon': isIconRotated, 'right-icon': !isIconRotated}"
+                (click)="rotateIcon()" icon="pi pi-angle-left" styleClass="p-button-rounded p-button-secondary"></p-button>
+          <!-- show nothing   -->
+          <p-menubar [model]="items"></p-menubar>
+    </div>
+</div>

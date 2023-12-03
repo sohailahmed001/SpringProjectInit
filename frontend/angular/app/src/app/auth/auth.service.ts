@@ -40,6 +40,10 @@ export class AuthService {
         return token != null;
     }
 
+    getUser(): any {
+        // do nothing
+    }
+
     // add this method to all HTTP requests that require authentication
     addTokenToHeader(): HttpHeaders {
         const headers = new HttpHeaders({

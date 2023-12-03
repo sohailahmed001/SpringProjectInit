@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="header">
+        <app-header [parent]="this" [isIconRotated]="!showSideBar"></app-header>
+    </div>
+    <div class="layout-body">
+        <div [class.hideSideBar]="!showSideBar" class="sidebar">
+            <app-sidebar></app-sidebar>
+        </div>
+        <div class="content" [class.showContent]="!showSideBar">
+            <div style="width: 100%; min-height: 90vh;">
+                <p-messages [(value)]="utilsService.errorMessages" [enableService]="false"></p-messages>
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>

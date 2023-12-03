@@ -4,6 +4,8 @@ import { AppComponent } from './app.component';
 import { authRoutes } from './auth/auth.routing';
 import { HomeComponent } from './components/home/home.component';
 import { LayoutComponent } from './auth/layout/layout.component';
+import { FullLayoutComponent } from './utils/full-layout-component/full-layout/full-layout.component';
+import { SearchUserComponent } from './components/search-user/search-user.component';
 
 const routes: Routes = [
   {
@@ -12,8 +14,18 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'home',
-    component: HomeComponent
+    path : '',
+    component : FullLayoutComponent,
+    children : [
+      {
+        path: 'home',
+        component: HomeComponent,
+      },
+      {
+        path: 'search-user',
+        component: SearchUserComponent
+      }
+    ]
   },
   {
     path: '',
