@@ -106,3 +106,4 @@ frontend/angular/app/.vscode/*
 frontend/angular/app/.vscode/tasks.json
 frontend/angular/app/.vscode/launch.json
 frontend/angular/app/.vscode/extensions.json
+.idea/libraries/*
