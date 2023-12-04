@@ -1,11 +1,8 @@
 package com.tendo.SpringInit.config;
 
-import com.tendo.SpringInit.filter.CsrfCookieFilter;
-import com.tendo.SpringInit.filter.JWTTokenGeneratorFilter;
-import com.tendo.SpringInit.filter.JWTTokenValidatorFilter;
+import com.tendo.SpringInit.filter.*;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,11 +12,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.security.web.csrf.*;
+import org.springframework.web.cors.*;
 import java.util.Collections;
+
 
 @Configuration
 @EnableWebSecurity
@@ -42,9 +38,9 @@ public class SecurityConfig
                         .csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers(CSRF_IGNORE_APIS)
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 )
-                .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
-                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
-                .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(getCsrfCookieFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(getJWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(getJWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                     .requestMatchers(HttpMethod.GET, AUTHENTICATED_APIS).authenticated()
                     .requestMatchers(HttpMethod.GET, GET_PERMITTED_APIS).permitAll()
@@ -52,6 +48,24 @@ public class SecurityConfig
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();
+    }
+
+    @Bean
+    public CsrfCookieFilter getCsrfCookieFilter()
+    {
+        return new CsrfCookieFilter();
+    }
+
+    @Bean
+    public JWTTokenValidatorFilter getJWTTokenValidatorFilter()
+    {
+        return new JWTTokenValidatorFilter();
+    }
+
+    @Bean
+    public JWTTokenGeneratorFilter getJWTTokenGeneratorFilter()
+    {
+        return new JWTTokenGeneratorFilter();
     }
 
     @Bean

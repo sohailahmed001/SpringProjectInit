@@ -3,8 +3,7 @@ package com.tendo.SpringInit.controller;
 import com.tendo.SpringInit.model.AppUser;
 import com.tendo.SpringInit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +33,11 @@ public class LoginController
     @GetMapping("/login")
     public ResponseEntity<AppUser> getUserAfterSuccessfulLogin(Authentication authentication)
     {
-        if(authentication == null) {
+        if (authentication == null)
+        {
             throw new UsernameNotFoundException("Provide valid Credentials");
         }
+
         return this.userService.getUserByUsername(authentication.getName())
                 .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found for username"));

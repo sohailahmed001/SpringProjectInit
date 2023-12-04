@@ -1,5 +1,4 @@
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { Component, Input } from '@angular/core';
 import { UtilsService } from '../../utils.service';
 
 @Component({
@@ -20,8 +19,6 @@ export class HeaderComponent {
 
   rotateIcon() {
     this.isIconRotated = !this.isIconRotated;
-
     this.parent.showSideBar = !this.isIconRotated;
-
   }
 }
