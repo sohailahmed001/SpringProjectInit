@@ -8,7 +8,7 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageService } from 'primeng/api';
 import { FullLayoutComponentModule } from './utils/full-layout-component/full-layout-component.module';
 import { SearchUserComponent } from './components/search-user/search-user.component';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { XhrInterceptor } from './interceptors/app.request.interceptor';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { FormsModule } from '@angular/forms';
@@ -27,11 +27,6 @@ import { ManageAuthoritiesComponent } from './components/manage-authorities/mana
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
-    BrowserModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    ProgressSpinnerModule,
     AuthModule,
     MessagesModule,
     JwtModule.forRoot({
@@ -50,6 +45,7 @@ import { ManageAuthoritiesComponent } from './components/manage-authorities/mana
     JwtHelperService,
     AuthGuardService,
     MessageService,
+    ConfirmationService
   ],
   bootstrap: [AppComponent]
 })

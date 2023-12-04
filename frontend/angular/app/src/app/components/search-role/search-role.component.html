@@ -1,0 +1,62 @@
+<form #from="ngForm">
+    <p-toolbar>
+        <div class="p-toolbar-group-start">
+            <label> Search Role</label>
+        </div>
+
+        <div class="p-toolbar-group-end">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+                (click)="onAddClick()"></button>
+        </div>
+    </p-toolbar>
+
+    <div class="ui-formgroup grid-nogutter p-5">
+        <p-table #dt [value]="roles" [rows]="10" [paginator]="true"
+            [globalFilterFields]="['name', 'authoritiesStr']"
+            [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedRoles" [rowHover]="true" dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true">
+            <ng-template pTemplate="caption">
+                <div class="flex align-items-center justify-content-between">
+                    <h5 class="m-0">Manage Roles</h5>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="getFilterValue($event)" placeholder="Search..." />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="name" style="width:30%;">Name <p-sortIcon field="name"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="authoritiesStr" style="width:50%;">Authorities <p-sortIcon field="authoritiesStr"></p-sortIcon>
+                    </th>
+                    <th style="width:20%;"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData>
+                <tr>
+                    <td>
+                        <a [routerLink]="['/edit-role', rowData.id]">
+                            {{ rowData.name }}
+                        </a>
+                    </td>
+                    <td>{{ rowData.authoritiesStr }}</td>
+                    <td style="display: flex; justify-content: space-evenly;">
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded ui-btn-tertiary p-button-success mr-2"
+                            (click)="editRole(rowData)">
+                        </button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                 (click)="deleteRole(rowData)">
+                        </button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="flex align-items-center justify-content-between">In total there are {{ roles ?
+                    roles.length : 0 }} roles.</div>
+            </ng-template>
+        </p-table>
+        <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+    </div>
+</form>

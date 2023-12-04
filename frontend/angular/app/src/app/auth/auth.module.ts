@@ -41,7 +41,8 @@ import { MessagesModule } from 'primeng/messages';
   exports:[
     ProgressSpinnerModule,
     CardModule,
-    ButtonModule
+    ButtonModule,
+    InputTextModule
   ],
   providers: [MessageService],
   bootstrap: [LayoutComponent]
