@@ -4,12 +4,15 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AppUser } from '../model/app-user.model';
+import { getCookie } from 'typescript-cookie';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
+
     private jwtToken: string;
+    private xsrfToken: string;
     baseURL = environment.baseURL;
     errorMessages: any[];
     PROJECT_PREFIX: string = environment.PROJECT_PREFIX;
@@ -52,6 +55,10 @@ export class AuthService {
         // do nothing
     }
 
+    setJWTToken(jwt){
+        sessionStorage.setItem(this.PROJECT_PREFIX + 'Authorization', jwt);
+    }
+
     // add this method to all HTTP requests that require authentication
     addJWTTokenToHeader(headers: HttpHeaders): HttpHeaders {
         const jwtToken = this.getJWTToken();
@@ -61,5 +68,30 @@ export class AuthService {
             return headers.append('Authorization', jwtToken);
         }
         return headers;
+    }
+
+    getXSRFToken(){
+        if (!this.xsrfToken) {
+            return sessionStorage.getItem(this.PROJECT_PREFIX + 'XSRF-TOKEN');
+        }
+
+        return this.xsrfToken;
+    }
+
+    setXSRFToken(xsrf){
+        sessionStorage.setItem(this.PROJECT_PREFIX + "XSRF-TOKEN", xsrf);
+    }
+
+    processAuthData(data: any) {
+        const jwtToken = data.headers.get('Authorization');
+        const xsrf = getCookie('XSRF-TOKEN');
+    
+        if (jwtToken) {
+            this.setJWTToken(jwtToken);
+        }
+    
+        if (xsrf) {
+            this.setXSRFToken(xsrf);
+        }
     }
 }

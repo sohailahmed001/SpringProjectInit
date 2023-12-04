@@ -1,19 +1,31 @@
-import { inject } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from "@angular/router";
 import { JwtHelperService } from "@auth0/angular-jwt";
-import { environment } from "src/environments/environment";
+import { Injectable, inject } from "@angular/core";
+import { AuthService } from "../auth/auth.service";
 
-export const authRouteGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-    const router = inject(Router);
-    const PROJECT_PREFIX = environment.PROJECT_PREFIX;
-    const jwtToken = sessionStorage.getItem(PROJECT_PREFIX + "Authorization");
-    const helper = new JwtHelperService();
-    
-    const isExpired = helper.isTokenExpired(jwtToken);
-  
-    if (jwtToken && !isExpired) {
-        return true;
+
+@Injectable()
+export class AuthGuardService {
+
+    constructor(private router: Router,
+        private authService: AuthService,
+        private jwtService: JwtHelperService) {
     }
-    router.navigate(['/login']);
-    return false;
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+        const jwtToken = this.authService.getJWTToken();
+        const isExpired = this.jwtService.isTokenExpired(jwtToken);
+
+        if (jwtToken && !isExpired) {
+            return true;
+        }
+
+        this.router.navigate(['/login']);
+        return false;
+    };
 }
+
+export const AuthGuard: CanActivateFn = ((next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean => {
+    return inject(AuthGuardService).canActivate(next, state);
+})
+

@@ -34,6 +34,11 @@ import { ManageAuthoritiesComponent } from './components/manage-authorities/mana
     ProgressSpinnerModule,
     AuthModule,
     MessagesModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter:  () => localStorage.getItem('token')
+      }
+    }),
     FullLayoutComponentModule,
   ],
   providers: [
@@ -42,6 +47,8 @@ import { ManageAuthoritiesComponent } from './components/manage-authorities/mana
       useClass : XhrInterceptor,
       multi : true
     },
+    JwtHelperService,
+    AuthGuardService,
     MessageService,
   ],
   bootstrap: [AppComponent]

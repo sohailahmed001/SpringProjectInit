@@ -8,6 +8,7 @@ import { SearchUserComponent } from './components/search-user/search-user.compon
 import { authRouteGuard } from './routeguards/auth.routeguard';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { ManageAuthoritiesComponent } from './components/manage-authorities/manage-authorities.component';
+import { AuthGuard } from './routeguards/auth.routeguard';
 
 const routes: Routes = [
   {
@@ -22,22 +23,22 @@ const routes: Routes = [
       {
         path: 'home',
         component: HomeComponent,
-        canActivate: [authRouteGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'search-user',
         component: SearchUserComponent,
-        canActivate: [authRouteGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'edit-user/:id',
         component: EditUserComponent,
-        canActivate: [authRouteGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'manage-authority',
         component: ManageAuthoritiesComponent,
-        canActivate: [authRouteGuard]
+        canActivate: [AuthGuard]
       }
     ]
   },

@@ -4,7 +4,6 @@ import { AuthService } from '../auth.service';
 import { UtilsService } from 'src/app/utils/utils.service';
 import { AppUser } from 'src/app/model/app-user.model';
 import { environment } from 'src/environments/environment';
-import { getCookie } from 'typescript-cookie';
 
 @Component({
   selector: 'app-login',
@@ -35,17 +34,7 @@ export class LoginComponent {
       {
         next: (data) => {
           this.utilsService.handleSuccessMessage("Login Successfull");
-          const jwtToken = data.headers.get('Authorization');
-          const xsrf = getCookie('XSRF-TOKEN');
-
-          if(jwtToken) {
-            sessionStorage.setItem(this.PROJECT_PREFIX + 'Authorization', jwtToken);
-          }
-
-          if(xsrf) {
-            sessionStorage.setItem(this.PROJECT_PREFIX + "XSRF-TOKEN", xsrf);
-          }
-
+          this.authService.processAuthData(data);
 
           setTimeout(() => {
             this.router.navigate(['home']);
