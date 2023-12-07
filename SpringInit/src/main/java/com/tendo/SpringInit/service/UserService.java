@@ -7,6 +7,7 @@ import com.tendo.SpringInit.repository.AuthorityRepository;
 import com.tendo.SpringInit.repository.RoleRepository;
 import com.tendo.SpringInit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Streamable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -99,6 +100,10 @@ public class UserService implements UserDetailsService {
         }
 
         return grantedAuthorities;
+    }
+
+    public List<Authority> getAllAuthorities() {
+        return Streamable.of(this.authorityRepository.findAll()).toList();
     }
 
     public Authority saveAuthority(Authority newAuthority)

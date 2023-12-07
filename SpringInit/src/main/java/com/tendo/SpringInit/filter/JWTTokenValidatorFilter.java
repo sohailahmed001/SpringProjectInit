@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class JWTTokenValidatorFilter extends OncePerRequestFilter {
@@ -38,7 +40,7 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
                                     .getBody();
 
                 String username = String.valueOf(claims.get("username"));
-                String authorities = String.valueOf(claims.get("authorities"));
+                String authorities = (String) claims.get("authorities");
 
                 Authentication auth = new UsernamePasswordAuthenticationToken(username, null, convertToAuthorities(authorities));
                 SecurityContextHolder.getContext().setAuthentication(auth);
@@ -52,11 +54,15 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return request.getServletPath().equals(JWTTokenGeneratorFilter.LOGIN_API);
+        List<String> paths = Arrays.asList(JWTTokenGeneratorFilter.LOGIN_API, "/api/register");
+        return paths.contains(request.getServletPath());
     }
 
     private static Collection<? extends GrantedAuthority> convertToAuthorities(String authString) {
-        String[] auths = authString.split(",");
-        return Arrays.stream(auths).map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+        if(authString != null && !authString.isEmpty()) {
+            String[] auths = authString.contains(",") ? authString.split(",") : new String[] {authString};
+            return Arrays.stream(auths).map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+        }
+        return null;
     }
 }

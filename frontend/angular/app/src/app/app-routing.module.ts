@@ -7,6 +7,8 @@ import { LayoutComponent } from './auth/layout/layout.component';
 import { FullLayoutComponent } from './utils/full-layout-component/full-layout/full-layout.component';
 import { SearchUserComponent } from './components/search-user/search-user.component';
 import { authRouteGuard } from './routeguards/auth.routeguard';
+import { EditUserComponent } from './components/edit-user/edit-user.component';
+import { ManageAuthoritiesComponent } from './components/manage-authorities/manage-authorities.component';
 
 const routes: Routes = [
   {
@@ -26,6 +28,16 @@ const routes: Routes = [
       {
         path: 'search-user',
         component: SearchUserComponent,
+        canActivate: [authRouteGuard]
+      },
+      {
+        path: 'edit-user/:id',
+        component: EditUserComponent,
+        canActivate: [authRouteGuard]
+      },
+      {
+        path: 'manage-authority',
+        component: ManageAuthoritiesComponent,
         canActivate: [authRouteGuard]
       }
     ]

@@ -56,8 +56,9 @@ export class AuthService {
     addJWTTokenToHeader(headers: HttpHeaders): HttpHeaders {
         const jwtToken = this.getJWTToken();
 
+        console.log('Token', jwtToken)
         if (jwtToken) {
-            return headers.append(this.PROJECT_PREFIX + 'Authorization', jwtToken);
+            return headers.append('Authorization', jwtToken);
         }
         return headers;
     }

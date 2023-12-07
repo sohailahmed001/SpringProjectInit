@@ -33,9 +33,9 @@ export class SidebarComponent {
           routerLink: '/search-role'
         },
         {
-          label: 'Privileges',
+          label: 'Authorities',
           icon: 'fa fa-key',
-          routerLink: '/search-priv'
+          routerLink: '/manage-authority'
         }
       ]
       },

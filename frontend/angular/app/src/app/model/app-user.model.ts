@@ -1,7 +1,12 @@
 export class AppUser {
-    public id: string;
-    public username: string;
-    public password: string;
-    public roles: any;
-  }
+  public id: string;
+  public username: string;
+  public password: string;
+  public roles: any;
+}
+
+export class Authority {
+  public id: number;
+  public name: string;
+}
   

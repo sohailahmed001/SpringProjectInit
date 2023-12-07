@@ -12,15 +12,19 @@ export class XhrInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    let httpHeaders = this.authService.addJWTTokenToHeader(req.headers);
+    let httpHeaders = req.headers;
+    console.log('INTERCEPT', httpHeaders)
 
-    const xsrfToken = sessionStorage.getItem(this.PROJECT_PREFIX + 'XSRF-TOKEN');
+    if(httpHeaders.get('Authorization') == null) {
+      httpHeaders = this.authService.addJWTTokenToHeader(req.headers);
+      const xsrfToken = sessionStorage.getItem(this.PROJECT_PREFIX + 'XSRF-TOKEN');
 
-    if(xsrfToken) {
-      httpHeaders = httpHeaders.append('X-XSRF-TOKEN', xsrfToken);  
+      if(xsrfToken) {
+        httpHeaders = httpHeaders.append('X-XSRF-TOKEN', xsrfToken);  
+      }
+
+      httpHeaders = httpHeaders.append('X-Requested-With', 'XMLHttpRequest');
     }
-
-    httpHeaders = httpHeaders.append('X-Requested-With', 'XMLHttpRequest');
 
     const xhr = req.clone({
       headers: httpHeaders
