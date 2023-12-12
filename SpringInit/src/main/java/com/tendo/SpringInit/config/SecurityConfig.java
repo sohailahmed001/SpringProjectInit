@@ -21,8 +21,8 @@ import java.util.Collections;
 @EnableWebSecurity
 public class SecurityConfig
 {
-    private static final String[] AUTHENTICATED_APIS    =   { "/api/test", "/api/authorities", "/api/authority", "/api/role" };
-    private static final String[] GET_PERMITTED_APIS    =   { "/api/login" };
+    private static final String[] AUTHENTICATED_APIS    =   { "/api/test", "/api/roles", "/api/roles/{id}", "/api/authorities", "/api/role"};
+    private static final String[] GET_PERMITTED_APIS    =   { "/api/login"};
     private static final String[] POST_PERMITTED_APIS   =   { "/api/register" };
     private static final String[] CSRF_IGNORE_APIS      =   { "/api/register", "/api/login", "/addAuthority", "/addRole" };
 

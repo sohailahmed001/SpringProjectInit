@@ -39,6 +39,7 @@ import { MessagesModule } from 'primeng/messages';
     MessagesModule
   ],
   exports:[
+    FormsModule,
     ProgressSpinnerModule,
     CardModule,
     ButtonModule,

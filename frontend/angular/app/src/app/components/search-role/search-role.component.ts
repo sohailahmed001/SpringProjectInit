@@ -10,10 +10,10 @@ import { UtilsService } from 'src/app/utils/utils.service';
   styleUrls: ['./search-role.component.scss']
 })
 export class SearchRoleComponent implements OnInit {
-  
+
   roles: any[];
   selectedRoles: any[];
-  @ViewChild('dt') postTable : Table;
+  @ViewChild('dt') postTable: Table;
 
   constructor(private router: Router,
     private confirmationService: ConfirmationService,
@@ -22,10 +22,11 @@ export class SearchRoleComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getRoles();
   }
 
-  onAddClick(){
-
+  onAddClick() {
+    this.router.navigate(['edit-role', 0]);
   }
 
   getFilterValue(event: Event): void {
@@ -33,11 +34,11 @@ export class SearchRoleComponent implements OnInit {
     this.postTable.filterGlobal(targetValue.value, 'contains');
   }
 
-  editRole(rowData){
-
+  editRole(rowData) {
+      this.router.navigate(['edit-role', rowData.id]);
   }
 
-  deleteRole(rowData){
+  deleteRole(rowData) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the selected role?',
       header: 'Confirm',
@@ -45,6 +46,32 @@ export class SearchRoleComponent implements OnInit {
       accept: () => {
         this.utilsService.handleSuccess("Roles Deleted Successfully");
       }
+    });
+  }
+
+  getRoles() {
+    this.utilsService.getObjects('api/roles', {}).subscribe(
+      {
+        next: (data) => {
+            this.roles = data;
+            this.postRoleSuccess(this.roles);
+        },
+        error: (error) => {
+          this.utilsService.handleError(error);
+        }
+      }
+    )
+  }
+
+  private postRoleSuccess(data) {
+    console.log(data);
+    
+
+    this.roles?.forEach((role) => {
+
+      let authorities: any[] = role.authorities?.map(val => val.name);
+      role['authoritiesStr'] = authorities ? authorities.join(", ") : null;
+
     });
   }
 }

@@ -1,8 +1,9 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { MessageService} from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,19 +16,16 @@ export class UtilsService {
   isMobile = false;
   errorMessages: any[];
 
-  constructor(private httpClient : HttpClient, 
-              private msgsService : MessageService)
-              {
-                
-              }
-
-
-
-  getObjects(serviceName:string , queryParams : any , ) : Observable<any>{
-    return this.httpClient.post(this.apiURL + serviceName , queryParams);
+  constructor(private httpClient: HttpClient,
+    private msgsService: MessageService,
+    private authService: AuthService) {
   }
 
-  getObjectByID(serviceName : string , id : any){
+  getObjects(serviceName: string, queryParams: any,): Observable<any> {
+    return this.httpClient.get(this.apiURL + serviceName, queryParams);
+  }
+
+  getObjectByID(serviceName: string, id: any) {
     return this.httpClient.get(this.apiURL + serviceName + '/' + id);
   }
 
@@ -38,22 +36,21 @@ export class UtilsService {
   deleteObjects(serviceName: string , deletedObj : any){
     return this.httpClient.delete(this.apiURL + serviceName + '/' + deletedObj.id);
   }
-  
-  handleSuccessMessage(message : any = null){
+
+  handleSuccessMessage(message: any = null) {
     let detailMessage = message?.length > 0 ? message : 'Details Saved Successfully';
     this.msgsService.add({ severity: 'success', detail: detailMessage });
   }
 
-  clearErrorMessages(){
+  clearErrorMessages() {
     this.errorMessages = [];
   }
 
   handleError(error: any = null) {
     let errorMessage = 'Error Occured';
 
-    if(error)
-    {
-        errorMessage =  error.error?.message
+    if (error) {
+      errorMessage = error.error?.message
     }
 
     this.errorMessages = [{ severity: 'error', summary: 'Error', detail: errorMessage }];
@@ -61,29 +58,41 @@ export class UtilsService {
   }
 
   handleSuccess(message: string = null) {
-      let msg = message || 'Details Saved Successfully';
+    let msg = message || 'Details Saved Successfully';
 
-      this.msgsService.add({ severity: 'success', summary: 'Success', detail: msg });
+    this.msgsService.add({ severity: 'success', summary: 'Success', detail: msg });
   }
 
-  addNullOptions(data : any[]){
-    let nullOption = {value : null , description : 'Please Select'};
+  addNullOptions(data: any[]) {
+    let nullOption = { value: null, description: 'Please Select' };
     data.unshift(nullOption);
     return data;
   }
 
-  isSuccessfulResponse(data : any){
-    if(data.result == 'ok'){
+  isSuccessfulResponse(data: any) {
+    if (data.result == 'ok') {
       return true;
     }
-    else{
+    else {
       this.handleError();
       return false;
     }
   }
 
-  getRequest(serviceName : any) : Observable<any>{
+  getRequest(serviceName: any): Observable<any> {
     return this.httpClient.get(this.apiURL + serviceName);
   }
 
+  addTokenToHeader(): HttpHeaders {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    const token = this.authService.getJWTToken();
+
+    if (token) {
+      return headers.set('Authorization', 'Bearer ' + token);
+    }
+    return headers;
+  }
 }

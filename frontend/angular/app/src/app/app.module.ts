@@ -5,16 +5,20 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { HomeComponent } from './components/home/home.component';
 import { MessagesModule } from 'primeng/messages';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { FullLayoutComponentModule } from './utils/full-layout-component/full-layout-component.module';
 import { SearchUserComponent } from './components/search-user/search-user.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { XhrInterceptor } from './interceptors/app.request.interceptor';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
-import { FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ManageAuthoritiesComponent } from './components/manage-authorities/manage-authorities.component';
+import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
+import { AuthGuardService } from './routeguards/auth.routeguard';
+import { TableModule } from 'primeng/table';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToolbarModule } from 'primeng/toolbar';
+import { SearchRoleComponent } from './components/search-role/search-role.component';
+import { EditRoleComponent } from './components/edit-role/edit-role.component';
 
 @NgModule({
   declarations: [
@@ -22,18 +26,18 @@ import { ManageAuthoritiesComponent } from './components/manage-authorities/mana
     HomeComponent,
     SearchUserComponent,
     EditUserComponent,
-    ManageAuthoritiesComponent
+    SearchRoleComponent,
+    ManageAuthoritiesComponent,
+    EditRoleComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AuthModule,
+    ConfirmDialogModule,
+    TableModule,
     MessagesModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter:  () => localStorage.getItem('token')
-      }
-    }),
+    ToolbarModule,
     FullLayoutComponentModule,
   ],
   providers: [
@@ -41,6 +45,10 @@ import { ManageAuthoritiesComponent } from './components/manage-authorities/mana
       provide : HTTP_INTERCEPTORS,
       useClass : XhrInterceptor,
       multi : true
+    },
+    {
+      provide: JWT_OPTIONS,
+      useValue: {} // Provide your JWT_OPTIONS configuration here if needed
     },
     JwtHelperService,
     AuthGuardService,

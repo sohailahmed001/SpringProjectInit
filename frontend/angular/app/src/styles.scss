@@ -23,6 +23,9 @@ p-progressSpinner{
     position: fixed !important;
 }
 
+.p-inputtext, .p-calendar{
+    width: 100%;
+}
 
 a{
     color:  var(--primary-theme-color);

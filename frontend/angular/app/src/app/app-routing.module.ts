@@ -5,10 +5,11 @@ import { HomeComponent } from './components/home/home.component';
 import { LayoutComponent } from './auth/layout/layout.component';
 import { FullLayoutComponent } from './utils/full-layout-component/full-layout/full-layout.component';
 import { SearchUserComponent } from './components/search-user/search-user.component';
-import { authRouteGuard } from './routeguards/auth.routeguard';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { ManageAuthoritiesComponent } from './components/manage-authorities/manage-authorities.component';
 import { AuthGuard } from './routeguards/auth.routeguard';
+import { SearchRoleComponent } from './components/search-role/search-role.component';
+import { EditRoleComponent } from './components/edit-role/edit-role.component';
 
 const routes: Routes = [
   {
@@ -39,7 +40,18 @@ const routes: Routes = [
         path: 'manage-authority',
         component: ManageAuthoritiesComponent,
         canActivate: [AuthGuard]
-      }
+      },
+      {
+        path: 'search-role',
+        component: SearchRoleComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'edit-role/:id',
+        component: EditRoleComponent,
+        canActivate: [AuthGuard]
+      },
+      
     ]
   },
   {
