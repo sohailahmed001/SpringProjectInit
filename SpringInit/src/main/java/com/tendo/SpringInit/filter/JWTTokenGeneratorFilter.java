@@ -25,16 +25,17 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication != null) {
-            SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
-            String jwt = Jwts.builder()
-                            .setIssuer(ISSUER)
-                            .setSubject(SUBJECT)
-                            .claim("username", authentication.getName())
-                            .claim("authorities", convertAuthorities(authentication.getAuthorities()))
-                            .setIssuedAt(new Date())
-                            .setExpiration(new Date(new Date().getTime() + 20000000))
-                            .signWith(key).compact();
+        if (authentication != null)
+        {
+            SecretKey   key =   Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
+            String      jwt =   Jwts.builder()
+                                    .setIssuer(ISSUER)
+                                    .setSubject(SUBJECT)
+                                    .claim("username", authentication.getName())
+                                    .claim("authorities", convertAuthorities(authentication.getAuthorities()))
+                                    .setIssuedAt(new Date())
+                                    .setExpiration(new Date(new Date().getTime() + 20000000))
+                                    .signWith(key).compact();
 
             response.setHeader(SecurityConstants.JWT_HEADER, jwt);
         }
@@ -52,9 +53,11 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter
     {
         Set<String> authoritiesSet = new HashSet<>();
 
-        for (GrantedAuthority authority : authorities) {
+        for (GrantedAuthority authority : authorities)
+        {
             authoritiesSet.add(authority.getAuthority());
         }
+
         return String.join(",", authoritiesSet);
     }
 }

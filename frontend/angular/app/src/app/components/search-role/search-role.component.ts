@@ -50,8 +50,7 @@ export class SearchRoleComponent implements OnInit {
   }
 
   getRoles() {
-    this.utilsService.getObjects('api/roles', {}).subscribe(
-      {
+    this.utilsService.getObjects('api/roles', {}).subscribe({
         next: (data) => {
             this.roles = data;
             this.postRoleSuccess(this.roles);
@@ -65,7 +64,6 @@ export class SearchRoleComponent implements OnInit {
 
   private postRoleSuccess(data) {
     console.log(data);
-    
 
     this.roles?.forEach((role) => {
 

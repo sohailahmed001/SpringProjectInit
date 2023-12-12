@@ -9,6 +9,7 @@ import { UtilsService } from 'src/app/utils/utils.service';
   styleUrls: ['./edit-role.component.scss']
 })
 export class EditRoleComponent implements OnInit {
+
   role: any = new Role();
   saveBtnItems: any[] = this.getSaveButtonItems();
   showLoader: boolean = false;
@@ -19,10 +20,7 @@ export class EditRoleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // do nothing
     this.showLoader = true;
-
-    // this.getGenderOptions();
 
     this.route.params.subscribe(
       (params) => {
@@ -36,10 +34,8 @@ export class EditRoleComponent implements OnInit {
     )
   }
 
-
   getRoleByID(id: any) {
-    this.utilsService.getObjectByID('api/roles',id).subscribe(
-      {
+    this.utilsService.getObjectByID('api/roles',id).subscribe({
         next : (data) => {
           this.role = data;
           this.postRoleByIDSuccess(data);
@@ -53,7 +49,6 @@ export class EditRoleComponent implements OnInit {
       }
     )
   }
-
 
   postRoleByIDSuccess(data: Object) {
   }
@@ -70,6 +65,6 @@ export class EditRoleComponent implements OnInit {
   }
 
   onSaveClick() {
-
+    // will work
   }
 }

@@ -21,23 +21,23 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter
 {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String jwt = request.getHeader(SecurityConstants.JWT_HEADER);
+        String  jwt =   request.getHeader(SecurityConstants.JWT_HEADER);
 
         if (jwt != null)
         {
             try
             {
-                SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
-                Claims claims = Jwts.parserBuilder()
-                                    .setSigningKey(key)
-                                    .build()
-                                    .parseClaimsJws(jwt)
-                                    .getBody();
+                SecretKey       key             =   Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
+                Claims          claims          =   Jwts.parserBuilder()
+                                                        .setSigningKey(key)
+                                                        .build()
+                                                        .parseClaimsJws(jwt)
+                                                        .getBody();
 
-                String username = String.valueOf(claims.get("username"));
-                String authorities = (String) claims.get("authorities");
+                String          username    =   String.valueOf(claims.get("username"));
+                String          authorities =   (String) claims.get("authorities");
+                Authentication  auth        =   new UsernamePasswordAuthenticationToken(username, null, convertToAuthorities(authorities));
 
-                Authentication auth = new UsernamePasswordAuthenticationToken(username, null, convertToAuthorities(authorities));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
             catch (Exception ex)
@@ -51,16 +51,18 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException
     {
-        List<String> paths = Arrays.asList(JWTTokenGeneratorFilter.LOGIN_API, "/api/register");
+        List<String>    paths   =   Arrays.asList(JWTTokenGeneratorFilter.LOGIN_API, "/api/register");
         return paths.contains(request.getServletPath());
     }
 
     private static Collection<? extends GrantedAuthority> convertToAuthorities(String authString)
     {
-        if(authString != null && !authString.isEmpty()) {
-            String[] auths = authString.contains(",") ? authString.split(",") : new String[] {authString};
-            return Arrays.stream(auths).map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+        if (authString == null || authString.isEmpty())
+        {
+            return null;
         }
-        return null;
+
+        String[]    auths   = authString.contains(",") ? authString.split(",") : new String[] {authString};
+        return Arrays.stream(auths).map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
     }
 }
