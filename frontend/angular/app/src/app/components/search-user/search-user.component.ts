@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppUser } from 'src/app/model/app-user.model';
+import { UserService } from 'src/app/services/user.service';
+import { UtilsService } from 'src/app/utils/utils.service';
 
 @Component({
   selector: 'app-search-user',
@@ -10,24 +12,30 @@ import { AppUser } from 'src/app/model/app-user.model';
 export class SearchUserComponent implements OnInit {
   users: any[] = [];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private userService: UserService, private utilsService: UtilsService) {}
 
   ngOnInit(): void {
-    const user1 = new AppUser();
-    const user2 = new AppUser();
-    const user3 = new AppUser();
-
-    user1.username = 'admin'
-    user2.username = 'amy';
-    user3.username = 'adam';
-
-    this.users.push(user1);
-    this.users.push(user2);
-    this.users.push(user3);
+    this.getAllUsers();
   }
 
-  onUserNameClick(event: any, user: any) {
+  getAllUsers() {
+    this.userService.getAllUsers({}).subscribe({
+      next: (data: any) => {
+        console.log('Users', data);
+        this.users = data;
+      },
+      error: (error) => {
+        this.utilsService.handleError(error);
+      }
+    })
+  }
+
+  onUserNameClick(event: any, user: AppUser) {
     console.log('User', user);
-    this.router.navigate(['/edit-user', 12]);
+    this.router.navigate(['/edit-user', user.id]);
+  }
+
+  onAddClick(event: any) {
+    this.router.navigate(['/edit-user', 0]);
   }
 }

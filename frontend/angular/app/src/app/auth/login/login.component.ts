@@ -37,8 +37,8 @@ export class LoginComponent {
           this.authService.processAuthData(data);
 
           setTimeout(() => {
-            this.router.navigate(['home']);
-          }, 1200);
+            this.router.navigate(['/home']);
+          }, 500);
 
           this.showLoader = false;
         },

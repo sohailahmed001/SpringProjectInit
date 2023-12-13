@@ -1,5 +1,6 @@
 package com.tendo.SpringInit.service;
 
+import com.tendo.SpringInit.exception.NotFoundException;
 import com.tendo.SpringInit.model.AppUser;
 import com.tendo.SpringInit.model.Authority;
 import com.tendo.SpringInit.model.Role;
@@ -66,22 +67,22 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public AppUser createNewUser(AppUser newUser)
-    {
-        String      hashPwd     =   this.passwordEncoder.encode(newUser.getPassword());
-        Set<Role>   userRoles   =   new HashSet<>();
-        List<Role>  roles       =   this.roleRepository.findRoleByName("ROLE_ADMIN"); // Adding Admin Role to new user
+    public AppUser createNewUser(AppUser newUser) {
+        return addOrUpdateUser(newUser);
+    }
 
-        if(!roles.isEmpty())
-        {
-            userRoles.add(roles.get(0));
+    //TODO
+    public AppUser addOrUpdateUser(AppUser user) {
+        if(user.getId() != null) {
+            user = getUserById(user.getId()).orElseThrow(() -> new NotFoundException(AppUser.class));
         }
 
-        newUser.setPassword(hashPwd);
-        newUser.setCreatedDate(new Date());
-        newUser.setRoles(userRoles);
+        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 
-        return saveUser(newUser);
+        if(user.getId() == null) {
+            user.setCreatedDate(new Date());
+        }
+        return saveUser(user);
     }
 
     public AppUser saveUser(AppUser user)
@@ -111,8 +112,11 @@ public class UserService implements UserDetailsService {
         return this.authorityRepository.save(newAuthority);
     }
 
-    public Role saveRole(Role newRole)
-    {
-        return this.roleRepository.save(newRole);
+    public List<AppUser> getAllUsers() {
+        return Streamable.of(this.userRepository.findAll()).toList();
+    }
+
+    public Optional<AppUser> getUserById(Long userId) {
+        return this.userRepository.findById(userId);
     }
 }

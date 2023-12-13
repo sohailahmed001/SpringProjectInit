@@ -1,0 +1,16 @@
+.btn {
+    border: 2px solid white;
+    border-radius: 4px;
+    width: 100px;
+    cursor: pointer !important;
+    font-size: 14px;
+}
+
+.btn-save {
+    background-color: royalblue;
+    border: none;
+}
+
+.btn-save:hover {
+    background-color: rgba(65, 105, 225, 0.895);
+}

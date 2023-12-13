@@ -1,5 +1,5 @@
 export class AppUser {
-  public id: string;
+  public id: number;
   public username: string;
   public password: string;
   public roles: any;

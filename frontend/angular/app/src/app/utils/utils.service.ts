@@ -21,8 +21,8 @@ export class UtilsService {
     private authService: AuthService) {
   }
 
-  getObjects(serviceName: string, queryParams: any,): Observable<any> {
-    return this.httpClient.get(this.apiURL + serviceName, queryParams);
+  getObjects(serviceName: string, queryParams: any): Observable<any> {
+    return this.httpClient.get(this.apiURL + serviceName, { params: queryParams });
   }
 
   getObjectByID(serviceName: string, id: any) {
@@ -30,7 +30,7 @@ export class UtilsService {
   }
 
   saveObjects(serviceName: string , createdObj : any){
-    return this.httpClient.post(this.apiURL + serviceName  , createdObj);
+    return this.httpClient.post(this.apiURL + serviceName, createdObj);
   }
 
   deleteObjects(serviceName: string , deletedObj : any){

@@ -26,10 +26,24 @@ public class RoleAuthorityController
     }
 
     @GetMapping("/roles/{id}")
-    private ResponseEntity<Role> getRoleByID(@PathVariable Long id) throws NotFoundException
+    private ResponseEntity<Role> getRoleByID(@PathVariable(value = "id") Long id) throws NotFoundException
     {
         Role role = roleService.getRoleByID(id);
 
         return new ResponseEntity<Role>(role, HttpStatus.OK);
+    }
+
+    @PostMapping("/roles")
+    public ResponseEntity<Role> addRole(@RequestBody Role role)
+    {
+        try
+        {
+            Role    savedRole   =   roleService.saveRole(role);
+            return new ResponseEntity<>(savedRole, HttpStatus.CREATED);
+        }
+        catch (Exception ex)
+        {
+            throw new RuntimeException("Unable to create role due to " + ex.getMessage());
+        }
     }
 }

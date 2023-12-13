@@ -1,14 +1,19 @@
-<form>
-    <div class="form-group row">
-        <label for="username" class="col-sm-2 col-form-label">Username*</label>
-        <div class="col-sm-6">
-            <input type="text" id="username" [(ngModel)]="user.username" required="required" name="username" class="form-control-plaintext"/>
+<div>
+    <header class="header border-bottom-2 surface-border m-0 p-2 mb-4">
+        <div class="grid">
+            <h3 class="p-2 m-0 col">Edit User</h3>
+            <button pButton class="btn btn-save ui-btn-primary col-2 col-offset-4 mr-4 mt-1" (click)="onSaveClick($event)" label="Save" icon="pi pi-save" type="button"></button>
+        </div>
+    </header>
+
+    <div class="ml-3">
+        <div class="field grid">
+            <label for="username" class="col-2">Username*</label>
+            <input type="text" id="username" [(ngModel)]="user.username" required="required" name="username" class="col-4"/>
+        </div>
+        <div class="field grid">
+            <label for="password" class="col-2">Password*</label>
+            <input type="password" id="password" [(ngModel)]="user.password" name="password" class="col-4"/>
         </div>
     </div>
-    <div class="form-group row">
-        <label for="password" class="col-sm-2 col-form-label">Password</label>
-        <div class="col-sm-6">
-            <input type="password" id="password" [(ngModel)]="user.password" name="password" class="form-control"/>
-        </div>
-    </div>
-</form>
+</div>

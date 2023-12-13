@@ -1,19 +1,26 @@
-<div class="ml-3">
-    <h2>Search Users</h2>
-    <div>
-        <label for="Details">Details:</label>
-        <input name="Details" type="text">
+<div>
+    <header class="header border-bottom-2 surface-border m-0 p-2 mb-4">
+        <div class="grid">
+            <h3 class="p-2 m-0 col">Search Users</h3>
+            <button pButton class="btn btn-add ui-btn-primary col-2 col-offset-4 mr-4 mt-1" (click)="onAddClick($event)" label="Add" icon="pi pi-plus" type="button"></button>
+        </div>
+    </header>
+    <div class="ml-3 formgroup-inline">
+        <div class="field">
+            <label for="Details">Details:</label>
+            <input class="ml-2" id="Details" name="Details" type="text">
+        </div>
+        <button class="btn btn-search ui-btn-primary px-2 py-1" type="button">Search</button>
     </div>
-
-    <table class="table table-hover">
-        <thead class="thead-dark">
+    <table class="table">
+        <thead>
             <tr>
                 <th scope="col">Username</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let user of users">
-                <td><a href="javascript:void(0)" (click)="onUserNameClick($event, user)">{{ user.username }}</a></td>
+                <td class="p-1"><a href="javascript:void(0)" (click)="onUserNameClick($event, user)">{{ user.username }}</a></td>
             </tr>
         </tbody>
     </table>

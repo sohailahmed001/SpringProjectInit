@@ -1,9 +1,9 @@
 package com.tendo.SpringInit.exception;
 
-public class NotFoundException extends Exception
+public class NotFoundException extends RuntimeException
 {
-    public NotFoundException(String objName)
+    public NotFoundException(Class<?> className)
     {
-        super(objName + " not found !!");
+        super(className.getSimpleName() + " not found !!");
     }
 }

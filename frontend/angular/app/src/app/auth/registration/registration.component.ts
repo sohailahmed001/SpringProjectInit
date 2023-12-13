@@ -1,5 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 import { UtilsService } from 'src/app/utils/utils.service';
 
 @Component({
@@ -13,8 +14,7 @@ export class RegistrationComponent {
   password: string;
   showLoader = false;
 
-  constructor(public utilsService: UtilsService,
-    private router: Router) { }
+  constructor(public utilsService: UtilsService, private userService: UserService, private router: Router) { }
 
   onSignInClick() {
     this.utilsService.clearErrorMessages();

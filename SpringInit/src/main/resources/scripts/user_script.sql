@@ -16,7 +16,7 @@ create table role (
 
 create table user (
     created_date datetime(6),
-    id binary(16) not null,
+    id bigint not null auto_increment,
     password varchar(255) not null,
     username varchar(255) UNIQUE not null,
     primary key (id)
@@ -32,7 +32,7 @@ create table role_authority (
 
 create table user_role (
     role_id bigint not null,
-    user_id binary(16) not null,
+    user_id bigint not null,
     primary key (role_id, user_id),
     FOREIGN KEY (user_id) REFERENCES user(id),
     FOREIGN KEY (role_id) REFERENCES role(id)

@@ -24,11 +24,16 @@ public class RoleService
 
     public Role getRoleByID(Long id) throws NotFoundException
     {
-        return roleRepository.findById(id).orElseThrow(() -> new NotFoundException("Role"));
+        return roleRepository.findById(id).orElseThrow(() -> new NotFoundException(Role.class));
     }
 
     public List<Authority> getAuthorities()
     {
         return (List<Authority>) authorityRepository.findAll();
+    }
+
+    public Role saveRole(Role newRole)
+    {
+        return this.roleRepository.save(newRole);
     }
 }

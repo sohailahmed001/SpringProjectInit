@@ -52,6 +52,7 @@ export class SearchRoleComponent implements OnInit {
   getRoles() {
     this.utilsService.getObjects('api/roles', {}).subscribe({
         next: (data) => {
+            console.log('roles', data);
             this.roles = data;
             this.postRoleSuccess(this.roles);
         },
