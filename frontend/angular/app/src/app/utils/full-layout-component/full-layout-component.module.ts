@@ -11,6 +11,10 @@ import { ButtonModule } from 'primeng/button';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { MessagesModule } from 'primeng/messages';
 import { UtilsService } from '../utils.service';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CardModule } from 'primeng/card';
 
 
 @NgModule({
@@ -27,11 +31,12 @@ import { UtilsService } from '../utils.service';
     ButtonModule,
     MessagesModule,
     PanelMenuModule,
-    MenubarModule
-
+    MenubarModule,
+    ToastModule,
+    BrowserAnimationsModule,
   ],
   exports:[ButtonModule],
-  providers:[UtilsService],
+  providers:[UtilsService, MessageService],
   bootstrap: [FullLayoutComponent]
 })
 export class FullLayoutComponentModule { }

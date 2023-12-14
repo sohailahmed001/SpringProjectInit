@@ -2,7 +2,7 @@ export class AppUser {
   public id: number;
   public username: string;
   public password: string;
-  public roles: any;
+  public roles: any[];
 }
 
 export class Authority {

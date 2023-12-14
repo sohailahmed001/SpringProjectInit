@@ -1,5 +1,7 @@
 package com.tendo.SpringInit.config;
 
+import com.fasterxml.jackson.databind.Module;
+import com.fasterxml.jackson.datatype.hibernate5.jakarta.Hibernate5JakartaModule;
 import com.tendo.SpringInit.filter.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -98,6 +100,11 @@ public class SecurityConfig
     public PasswordEncoder getPasswordEncoder()
     {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public Module hibernateJakartaModule() {
+        return new Hibernate5JakartaModule();
     }
 }
 

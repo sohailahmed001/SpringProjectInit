@@ -30,7 +30,6 @@ import { MessagesModule } from 'primeng/messages';
     BrowserAnimationsModule,
     ProgressSpinnerModule,
     PasswordModule,
-    BrowserAnimationsModule,
     ButtonModule,
     CardModule,
     ToastModule,

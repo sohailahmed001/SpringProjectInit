@@ -10,7 +10,8 @@ import { UtilsService } from 'src/app/utils/utils.service';
 })
 export class EditRoleComponent implements OnInit {
 
-  role: any = new Role();
+  role: Role = new Role();
+  authorityOptions: any[] = [];
   saveBtnItems: any[] = this.getSaveButtonItems();
   showLoader: boolean = false;
 
@@ -31,12 +32,14 @@ export class EditRoleComponent implements OnInit {
           this.showLoader = false;
         }
       }
-    )
+    );
+
+    this.getAuthorities();
   }
 
-  getRoleByID(id: any) {
+  getRoleByID(id: number) {
     this.utilsService.getObjectByID('api/roles',id).subscribe({
-        next : (data) => {
+        next : (data: any) => {
           this.role = data;
           this.postRoleByIDSuccess(data);
           this.showLoader = false;
@@ -45,6 +48,18 @@ export class EditRoleComponent implements OnInit {
           console.log(error);
           this.utilsService.handleError(error);
           this.showLoader = false;
+        }
+      }
+    )
+  }
+
+  getAuthorities() {
+    this.utilsService.getObjects('api/authorities', {}).subscribe({
+        next : (data: any) => {
+          this.authorityOptions = data;
+        },
+        error : (error) => {
+          this.utilsService.handleError(error);
         }
       }
     )
@@ -65,6 +80,18 @@ export class EditRoleComponent implements OnInit {
   }
 
   onSaveClick() {
-    // will work
+    this.showLoader = true; 
+    this.utilsService.saveObjects('api/roles', this.role).subscribe({
+      next : (data) => {
+        this.utilsService.handleSuccessMessage('Role Saved');
+        this.getRoleByID(this.role.id);
+        this.showLoader = false;
+      },
+      error : (error) => {
+        this.utilsService.handleError(error);
+        this.showLoader = false;
+      }
+    }
+  )
   }
 }

@@ -18,14 +18,8 @@ export class UserService {
       return this.utilsService.saveObjects("api/users", user);
     }
 
-    getAllAuthorities(): Observable<any> {
-        return this.http.get(this.baseURL + "api/authorities")
-            .pipe(
-                map((data: any) => {
-                    console.log(data);
-                    return data;
-                })
-            );
+    getAllAuthorities(params: any): Observable<any> {
+      return this.utilsService.getObjects('api/authorities', params);
     }
 
     getAllUsers(params: any): Observable<any> {
@@ -34,5 +28,9 @@ export class UserService {
 
     getUserById(id: number) {
       return this.utilsService.getObjectByID('api/users', id);
+    }
+
+    getAllRoles(params: any): Observable<any> {
+      return this.utilsService.getObjects('api/roles', params);
     }
 }

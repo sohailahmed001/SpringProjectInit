@@ -1,23 +1,29 @@
 <form #from="ngForm">
     <p-toolbar>
         <div class="p-toolbar-group-start">
-            <label> Edit Category</label>
+            <label> Edit Role</label>
         </div>
         <div class="p-toolbar-group-end">
             <button pButton label="Cancel" icon="fa fa-times" (click)="onCancelClick()"
                 class="mr-2 ui-btn-tertiary"></button>
-            <button pButton label="Save" icon="fa fa-save" (click)="onCancelClick()"
+            <button pButton label="Save" icon="fa fa-save" (click)="onSaveClick()"
                 class="mr-2 ui-btn-primary"></button>
         </div>
     </p-toolbar>
 
     <div class="grid-nogutter p-5">
-        <div class="col-12">
+        <div class="col-6">
             <span class="p-float-label">
-                <input pInputText name="code" id="code" [(ngModel)]="role.name" />
+                <input pInputText name="name" id="name" [(ngModel)]="role.name" />
                 <label>Name</label>
             </span>
         </div>
+    </div>
+    <div class="grid-nogutter p-5 pt-0">
+        <span class="p-float-label">
+            <p-multiSelect class="multi-select" name="Authorities" [options]="authorityOptions" [(ngModel)]="role.authorities" optionLabel="name" dataKey="id"></p-multiSelect>
+            <label>Authorities</label>
+        </span>
     </div>
 
     <p-progressSpinner *ngIf="showLoader" ></p-progressSpinner>

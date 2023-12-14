@@ -36,11 +36,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-rowData>
                 <tr>
-                    <td>
-                        <a [routerLink]="['/edit-role', rowData.id]">
-                            {{ rowData.name }}
-                        </a>
-                    </td>
+                    <td>{{ rowData.name }}</td>
                     <td>{{ rowData.authoritiesStr }}</td>
                     <td style="display: flex; justify-content: space-evenly;">
                         <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded ui-btn-tertiary p-button-success mr-2"

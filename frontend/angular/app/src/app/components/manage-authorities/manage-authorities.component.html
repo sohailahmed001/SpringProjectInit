@@ -1,15 +1,59 @@
-<h2>All Authorities</h2>
-<button type="button" class="btn btn-primary">Add</button>
-<table class="table table-hover">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">Name</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let authority of authorities">
-            <td><a href="javascript:void(0)">{{ authority.name }}</a></td>
-        </tr>
-    </tbody>
-</table>
+<form #from="ngForm">
+    <p-toolbar>
+        <div class="p-toolbar-group-start">
+            <label>Manage Authorities</label>
+        </div>
+
+        <div class="p-toolbar-group-end">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+                (click)="onAddClick()"></button>
+        </div>
+    </p-toolbar>
+
+    <div class="ui-formgroup p-5">
+        <p-table #authTable [value]="authorities" [style]="{'width': '700px', 'margin': 'auto'}" [globalFilterFields]="['name']" [rowHover]="true" dataKey="id">
+            <ng-template pTemplate="caption">
+                <div class="flex align-items-center justify-content-between">
+                    <h5 class="m-0">Manage Authorities</h5>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="getFilterValue($event)" placeholder="Search..." />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width:30%;">Name</th>
+                    <th style="width:20%;"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData>
+                <tr>
+                    <td>
+                        {{ rowData.name }}
+                    </td>
+                    <td style="display: flex; justify-content: space-evenly;">
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded ui-btn-tertiary p-button-success mr-2"
+                            (click)="onEditRoleClick(rowData)">
+                        </button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                            (click)="onDeleteRoleClick(rowData)">
+                        </button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</form>
 <p-progressSpinner *ngIf="showLoader"></p-progressSpinner>
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+
+<p-dialog *ngIf="showEditAuthorityPopup" header="Edit Authority" [(visible)]="showEditAuthorityPopup" [style]="{ width: '560px' }">
+        <div class="field grid">
+            <label for="name" class="col-2">Name*</label>
+            <input type="text" [(ngModel)]="selectedAuthority.name" required="required" name="name" class="col-6"/>
+        </div>
+    <ng-template pTemplate="footer">
+        <button class="btn-save-role" pButton icon="pi pi-check" (click)="onSaveRoleClick()" label="Save"></button>
+    </ng-template>
+</p-dialog>

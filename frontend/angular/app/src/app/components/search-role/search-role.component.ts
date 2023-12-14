@@ -26,7 +26,7 @@ export class SearchRoleComponent implements OnInit {
   }
 
   onAddClick() {
-    this.router.navigate(['edit-role', 0]);
+    this.router.navigate(['/edit-role', 0]);
   }
 
   getFilterValue(event: Event): void {

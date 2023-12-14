@@ -7,6 +7,7 @@ import com.tendo.SpringInit.model.Role;
 import com.tendo.SpringInit.repository.AuthorityRepository;
 import com.tendo.SpringInit.repository.RoleRepository;
 import com.tendo.SpringInit.repository.UserRepository;
+import io.micrometer.observation.ObservationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -125,5 +126,13 @@ public class UserService implements UserDetailsService {
 
     public Optional<AppUser> getUserById(Long userId) {
         return this.userRepository.findById(userId);
+    }
+
+    public void deleteAuthority(Long authorityId) {
+        this.authorityRepository.deleteById(authorityId);
+    }
+
+    public Optional<AppUser> getUserByIdWithRoles(Long userId) {
+        return this.userRepository.findByIdWithRoles(userId);
     }
 }

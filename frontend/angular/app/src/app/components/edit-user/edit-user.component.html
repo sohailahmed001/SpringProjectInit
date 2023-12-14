@@ -15,5 +15,9 @@
             <label for="password" class="col-2">Password*</label>
             <input type="password" id="password" [(ngModel)]="user.password" name="password" class="col-4"/>
         </div>
+        <div class="field grid">
+            <label class="col-2">Roles</label>
+            <p-multiSelect class="multi-select" name="Roles" [options]="roleOptions" [(ngModel)]="user.roles" optionLabel="name" dataKey="id"></p-multiSelect>
+        </div>
     </div>
 </div>

@@ -11,6 +11,7 @@ import { UtilsService } from 'src/app/utils/utils.service';
 })
 export class EditUserComponent implements OnInit {
   user:AppUser = new AppUser();
+  roleOptions: any[] = [];
 
   constructor(private route: ActivatedRoute, private userService: UserService, private utilsService: UtilsService) { }
 
@@ -24,6 +25,19 @@ export class EditUserComponent implements OnInit {
         this.getUserById(id);
       }
     });
+
+    this.getRoleOptions();
+  }
+
+  getRoleOptions() {
+    this.userService.getAllRoles({}).subscribe({
+      next: (data: any) => {
+        this.roleOptions = data;
+      },
+      error: (error: any) => {
+        this.utilsService.handleError(error);
+      }
+    })
   }
 
   getUserById(id: number) {

@@ -33,8 +33,8 @@ export class UtilsService {
     return this.httpClient.post(this.apiURL + serviceName, createdObj, {withCredentials: true});
   }
 
-  deleteObjects(serviceName: string , deletedObj : any){
-    return this.httpClient.delete(this.apiURL + serviceName + '/' + deletedObj.id, {withCredentials: true});
+  deleteObjects(serviceName: string , deletedObjId : any){
+    return this.httpClient.delete(this.apiURL + serviceName + '/' + deletedObjId, {withCredentials: true});
   }
 
   handleSuccessMessage(message: any = null) {

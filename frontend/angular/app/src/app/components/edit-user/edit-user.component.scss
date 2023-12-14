@@ -14,3 +14,16 @@
 .btn-save:hover {
     background-color: rgba(65, 105, 225, 0.895);
 }
+
+::ng-deep {
+    .p-multiselect {
+        min-width: 350px;
+        padding: 0;
+        margin: 0;
+        height: 38px;
+    }
+
+    .multi-select {
+        padding: 0;
+    }
+}

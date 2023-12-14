@@ -27,7 +27,7 @@ public class UserController
 
     @GetMapping("/users/{id}")
     public ResponseEntity<AppUser> getUserById(@PathVariable(value = "id") Long userId) throws NotFoundException {
-        return this.userService.getUserById(userId)
+        return this.userService.getUserByIdWithRoles(userId)
             .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
             .orElseThrow(() -> new NotFoundException(AppUser.class));
     }
@@ -40,25 +40,6 @@ public class UserController
         }
         catch (Exception ex) {
             throw new RuntimeException("Unable to update user due to " + ex.getMessage());
-        }
-    }
-
-    @GetMapping("/authorities")
-    public ResponseEntity<List<Authority>> getAllAuthorities() {
-        List<Authority> authorities = this.userService.getAllAuthorities();
-        return new ResponseEntity<>(authorities, HttpStatus.OK);
-    }
-
-    @PostMapping("/authority")
-    public ResponseEntity<Authority> addAuthority(@RequestBody Authority authority)
-    {
-        try
-        {
-            Authority   savedAuthority  =   this.userService.saveAuthority(authority);
-            return new ResponseEntity<>(savedAuthority, HttpStatus.CREATED);
-        }
-        catch (Exception ex) {
-            throw new RuntimeException("Unable to create authority due to " + ex.getMessage());
         }
     }
 }

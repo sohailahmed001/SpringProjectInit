@@ -19,6 +19,10 @@ import { SearchUserComponent } from './components/search-user/search-user.compon
 import { XhrInterceptor } from './interceptors/app.request.interceptor';
 import { AuthGuardService } from './routeguards/auth.routeguard';
 import { FullLayoutComponentModule } from './utils/full-layout-component/full-layout-component.module';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DialogModule } from 'primeng/dialog';
+import { ToastModule } from 'primeng/toast';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -33,13 +37,17 @@ import { FullLayoutComponentModule } from './utils/full-layout-component/full-la
   imports: [
     BrowserModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
     AuthModule,
     ConfirmDialogModule,
     TableModule,
     MessagesModule,
     ToolbarModule,
     FullLayoutComponentModule,
-    HttpClientModule
+    HttpClientModule,
+    MultiSelectModule,
+    DialogModule,
+    ToastModule
   ],
   providers: [
     {

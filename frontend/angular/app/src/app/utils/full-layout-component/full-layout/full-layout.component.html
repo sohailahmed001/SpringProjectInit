@@ -8,6 +8,7 @@
         </div>
         <div class="content" [class.showContent]="!showSideBar">
             <div style="width: 100%; min-height: 90vh;">
+                <p-toast [style]="{'margin-top': '40px'}"></p-toast>
                 <p-messages [(value)]="utilsService.errorMessages" [enableService]="false"></p-messages>
                 <router-outlet></router-outlet>
             </div>
