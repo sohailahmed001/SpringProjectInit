@@ -40,7 +40,7 @@ export class EditUserComponent implements OnInit {
   onSaveClick(event: any) {
     this.userService.saveUser(this.user).subscribe({
       next: (data: any) => {
-        console.log('User', data);
+        this.utilsService.handleSuccessMessage('Saved User')
         this.getUserById(data.id);
       },
       error: (error) => {

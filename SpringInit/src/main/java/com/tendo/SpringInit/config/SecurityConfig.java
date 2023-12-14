@@ -14,6 +14,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.session.ChangeSessionIdAuthenticationStrategy;
+import org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy;
+import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.*;
@@ -27,8 +30,8 @@ import java.util.Collections;
 @EnableWebSecurity
 public class SecurityConfig
 {
-    private static final String[] AUTHENTICATED_APIS    =   { "/api/test", "/api/users/**", "/api/roles/**", "/api/authorities/**"};
-    private static final String[] GET_PERMITTED_APIS    =   { "/api/login"};
+    private static final String[] AUTHENTICATED_APIS    =   { "/api/test", "/api/users/**", "/api/roles/**", "/api/authorities/**" };
+    private static final String[] GET_PERMITTED_APIS    =   { "/api/login" };
     private static final String[] POST_PERMITTED_APIS   =   { "/api/register" };
     private static final String[] CSRF_IGNORE_APIS      =   { "/api/register" };
 
@@ -41,6 +44,7 @@ public class SecurityConfig
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationHelper()))
                 .csrf((csrf) -> csrf
+                        .sessionAuthenticationStrategy(new NullAuthenticatedSessionStrategy())
                         .csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers(CSRF_IGNORE_APIS)
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 )
@@ -75,19 +79,16 @@ public class SecurityConfig
         }
     }
 
-    @Bean
     public CsrfCookieFilter getCsrfCookieFilter()
     {
         return new CsrfCookieFilter();
     }
 
-    @Bean
     public JWTTokenValidatorFilter getJWTTokenValidatorFilter()
     {
         return new JWTTokenValidatorFilter();
     }
 
-    @Bean
     public JWTTokenGeneratorFilter getJWTTokenGeneratorFilter()
     {
         return new JWTTokenGeneratorFilter();

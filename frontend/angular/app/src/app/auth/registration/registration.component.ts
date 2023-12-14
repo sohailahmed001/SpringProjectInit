@@ -34,7 +34,6 @@ export class RegistrationComponent {
         },
         error: (er) => {
           this.showLoader = false;
-          console.log("error called");
           this.utilsService.handleError(er);
         }
       }

@@ -20,6 +20,7 @@ export class AuthGuardService {
             return true;
         }
 
+        this.authService.logout();
         this.router.navigate(['/login']);
         return false;
     };

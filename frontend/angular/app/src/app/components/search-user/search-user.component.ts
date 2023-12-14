@@ -21,7 +21,6 @@ export class SearchUserComponent implements OnInit {
   getAllUsers() {
     this.userService.getAllUsers({}).subscribe({
       next: (data: any) => {
-        console.log('Users', data);
         this.users = data;
       },
       error: (error) => {
@@ -31,7 +30,6 @@ export class SearchUserComponent implements OnInit {
   }
 
   onUserNameClick(event: any, user: AppUser) {
-    console.log('User', user);
     this.router.navigate(['/edit-user', user.id]);
   }
 

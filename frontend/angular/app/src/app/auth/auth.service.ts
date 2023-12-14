@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AppUser } from '../model/app-user.model';
-import { getCookie } from 'typescript-cookie';
+import { getCookie, setCookie } from 'typescript-cookie';
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +12,6 @@ import { getCookie } from 'typescript-cookie';
 export class AuthService {
 
     private jwtToken: string;
-    private xsrfToken: string;
     baseURL = environment.baseURL;
     errorMessages: any[];
     PROJECT_PREFIX: string = environment.PROJECT_PREFIX;
@@ -27,7 +26,6 @@ export class AuthService {
         return this.http.get(this.baseURL + "api/login", { observe: 'response',withCredentials: true, headers: httpHeaders })
             .pipe(
                 map((data: any) => {
-                    console.log(data);
                     return data;
                 })
             );
@@ -36,7 +34,7 @@ export class AuthService {
     logout(): void {
         this.jwtToken = null;
         sessionStorage.removeItem(this.PROJECT_PREFIX + 'Authorization');
-        sessionStorage.removeItem(this.PROJECT_PREFIX + 'XSRF-TOKEN');
+        setCookie('XSRF-TOKEN', '');
     }
 
     getJWTToken(): string {
@@ -63,7 +61,6 @@ export class AuthService {
     addJWTTokenToHeader(headers: HttpHeaders): HttpHeaders {
         const jwtToken = this.getJWTToken();
 
-        console.log('Token', jwtToken)
         if (jwtToken) {
             return headers.append('Authorization', jwtToken);
         }
@@ -71,27 +68,14 @@ export class AuthService {
     }
 
     getXSRFToken(){
-        if (!this.xsrfToken) {
-            return sessionStorage.getItem(this.PROJECT_PREFIX + 'XSRF-TOKEN');
-        }
-
-        return this.xsrfToken;
+        return getCookie('XSRF-TOKEN');
     }
-
-    setXSRFToken(xsrf){
-        sessionStorage.setItem(this.PROJECT_PREFIX + "XSRF-TOKEN", xsrf);
-    }
-
+    
     processAuthData(data: any) {
         const jwtToken = data.headers.get('Authorization');
-        const xsrf = getCookie('XSRF-TOKEN');
     
         if (jwtToken) {
             this.setJWTToken(jwtToken);
-        }
-    
-        if (xsrf) {
-            this.setXSRFToken(xsrf);
         }
     }
 }

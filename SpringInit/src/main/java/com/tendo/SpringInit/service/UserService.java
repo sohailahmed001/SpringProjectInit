@@ -74,12 +74,19 @@ public class UserService implements UserDetailsService {
     //TODO
     public AppUser addOrUpdateUser(AppUser user) {
         if(user.getId() != null) {
-            user = getUserById(user.getId()).orElseThrow(() -> new NotFoundException(AppUser.class));
+            if(user.getPassword() == null) {
+                AppUser existingUser = getUserById(user.getId()).orElseThrow(() -> new NotFoundException(AppUser.class));
+                user.setPassword(existingUser.getPassword());
+            }
+            else {
+                user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+            }
         }
-
-        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
-
-        if(user.getId() == null) {
+        else {
+            if(user.getPassword() == null || user.getPassword().isEmpty()) {
+                throw new RuntimeException("Password is required");
+            }
+            user.setPassword(this.passwordEncoder.encode(user.getPassword()));
             user.setCreatedDate(new Date());
         }
         return saveUser(user);

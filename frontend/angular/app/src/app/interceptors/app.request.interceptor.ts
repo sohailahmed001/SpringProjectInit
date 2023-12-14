@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable, tap } from "rxjs";
 import { environment } from "src/environments/environment";
 import { AuthService } from "../auth/auth.service";
+import { getCookie } from 'typescript-cookie';
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -13,11 +14,10 @@ export class XhrInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let httpHeaders = req.headers;
-    console.log('INTERCEPT', httpHeaders)
 
     if(httpHeaders.get('Authorization') == null) {
       httpHeaders = this.authService.addJWTTokenToHeader(req.headers);
-      const xsrfToken = sessionStorage.getItem(this.PROJECT_PREFIX + 'XSRF-TOKEN');
+      const xsrfToken = this.authService.getXSRFToken();
 
       if(xsrfToken) {
         httpHeaders = httpHeaders.append('X-XSRF-TOKEN', xsrfToken);

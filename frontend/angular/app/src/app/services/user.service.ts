@@ -19,7 +19,7 @@ export class UserService {
     }
 
     getAllAuthorities(): Observable<any> {
-        return this.http.get(this.baseURL + "api/authorities", { observe: 'response' })
+        return this.http.get(this.baseURL + "api/authorities")
             .pipe(
                 map((data: any) => {
                     console.log(data);
