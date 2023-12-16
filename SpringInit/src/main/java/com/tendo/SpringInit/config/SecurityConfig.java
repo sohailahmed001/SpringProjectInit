@@ -3,12 +3,9 @@ package com.tendo.SpringInit.config;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.datatype.hibernate5.jakarta.Hibernate5JakartaModule;
 import com.tendo.SpringInit.filter.*;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 import org.springframework.context.annotation.*;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.config.Customizer;
+import org.springframework.http.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,16 +13,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.session.ChangeSessionIdAuthenticationStrategy;
-import org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
-import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.authentication.www.*;
 import org.springframework.security.web.csrf.*;
 import org.springframework.web.cors.*;
-
 import java.io.IOException;
-import java.util.Collections;
+import java.util.*;
 
 
 @Configuration
@@ -62,20 +55,24 @@ public class SecurityConfig
         return http.build();
     }
 
-    public BasicAuthenticationEntryPoint getCustomBasicAuthenticationEntryPoint() {
+    public BasicAuthenticationEntryPoint getCustomBasicAuthenticationEntryPoint()
+    {
         return new CustomBasicAuthenticationEntryPoint();
     }
 
     // Custom entry point to handle authentication failure
-    private static class CustomBasicAuthenticationEntryPoint extends BasicAuthenticationEntryPoint {
+    private static class CustomBasicAuthenticationEntryPoint extends BasicAuthenticationEntryPoint
+    {
         @Override
-        public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
+        public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException
+        {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
         }
 
         @Override
-        public void afterPropertiesSet() {
+        public void afterPropertiesSet()
+        {
             setRealmName("Realm");
             super.afterPropertiesSet();
         }
@@ -103,7 +100,8 @@ public class SecurityConfig
     }
 
     @Bean
-    public Module hibernateJakartaModule() {
+    public Module hibernateJakartaModule()
+    {
         return new Hibernate5JakartaModule();
     }
 }

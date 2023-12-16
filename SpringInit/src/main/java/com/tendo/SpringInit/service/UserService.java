@@ -1,26 +1,20 @@
 package com.tendo.SpringInit.service;
 
 import com.tendo.SpringInit.exception.NotFoundException;
-import com.tendo.SpringInit.model.AppUser;
-import com.tendo.SpringInit.model.Authority;
-import com.tendo.SpringInit.model.Role;
-import com.tendo.SpringInit.repository.AuthorityRepository;
-import com.tendo.SpringInit.repository.RoleRepository;
-import com.tendo.SpringInit.repository.UserRepository;
-import io.micrometer.observation.ObservationFilter;
+import com.tendo.SpringInit.model.*;
+import com.tendo.SpringInit.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService implements UserDetailsService
+{
+
     @Autowired
     private UserRepository userRepository;
 
@@ -73,23 +67,31 @@ public class UserService implements UserDetailsService {
     }
 
     //TODO
-    public AppUser addOrUpdateUser(AppUser user) {
-        if(user.getId() != null) {
-            if(user.getPassword() == null) {
+    public AppUser addOrUpdateUser(AppUser user)
+    {
+        if (user.getId() != null)
+        {
+            if (user.getPassword() == null)
+            {
                 AppUser existingUser = getUserById(user.getId()).orElseThrow(() -> new NotFoundException(AppUser.class));
                 user.setPassword(existingUser.getPassword());
             }
-            else {
+            else
+            {
                 user.setPassword(this.passwordEncoder.encode(user.getPassword()));
             }
         }
-        else {
-            if(user.getPassword() == null || user.getPassword().isEmpty()) {
+        else
+        {
+            if (user.getPassword() == null || user.getPassword().isEmpty())
+            {
                 throw new RuntimeException("Password is required");
             }
+
             user.setPassword(this.passwordEncoder.encode(user.getPassword()));
             user.setCreatedDate(new Date());
         }
+
         return saveUser(user);
     }
 
@@ -120,19 +122,23 @@ public class UserService implements UserDetailsService {
         return this.authorityRepository.save(newAuthority);
     }
 
-    public List<AppUser> getAllUsers() {
+    public List<AppUser> getAllUsers()
+    {
         return Streamable.of(this.userRepository.findAll()).toList();
     }
 
-    public Optional<AppUser> getUserById(Long userId) {
+    public Optional<AppUser> getUserById(Long userId)
+    {
         return this.userRepository.findById(userId);
     }
 
-    public void deleteAuthority(Long authorityId) {
+    public void deleteAuthority(Long authorityId)
+    {
         this.authorityRepository.deleteById(authorityId);
     }
 
-    public Optional<AppUser> getUserByIdWithRoles(Long userId) {
+    public Optional<AppUser> getUserByIdWithRoles(Long userId)
+    {
         return this.userRepository.findByIdWithRoles(userId);
     }
 }

@@ -10,8 +10,9 @@
         </div>
     </p-toolbar>
 
-    <div class="ui-formgroup p-5">
-        <p-table #authTable [value]="authorities" [style]="{'width': '700px', 'margin': 'auto'}" [globalFilterFields]="['name']" [rowHover]="true" dataKey="id">
+    <div class="ui-formgroup p-5 col-8">
+        <p-table #authTable [value]="authorities" [globalFilterFields]="['name']" selectionMode="single" (onRowSelect)="onRowSelect($event.data)" 
+                [rowHover]="true" dataKey="id">
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
                     <h5 class="m-0">Manage Authorities</h5>
@@ -23,19 +24,16 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width:30%;">Name</th>
-                    <th style="width:20%;"></th>
+                    <th style="width:40%;">Name</th>
+                    <th style="width:10%;"></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData>
-                <tr>
+                <tr [pSelectableRow]="rowData">
                     <td>
                         {{ rowData.name }}
                     </td>
                     <td style="display: flex; justify-content: space-evenly;">
-                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded ui-btn-tertiary p-button-success mr-2"
-                            (click)="onEditRoleClick(rowData)">
-                        </button>
                         <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
                             (click)="onDeleteRoleClick(rowData)">
                         </button>
@@ -51,9 +49,11 @@
 <p-dialog *ngIf="showEditAuthorityPopup" header="Edit Authority" [(visible)]="showEditAuthorityPopup" [style]="{ width: '560px' }">
         <div class="field grid">
             <label for="name" class="col-2">Name*</label>
-            <input type="text" [(ngModel)]="selectedAuthority.name" required="required" name="name" class="col-6"/>
+            <div  class="col-8">
+                <input pInputText type="text" [(ngModel)]="selectedAuthority.name" required="required" name="name"/>
+            </div>
         </div>
     <ng-template pTemplate="footer">
-        <button class="btn-save-role" pButton icon="pi pi-check" (click)="onSaveRoleClick()" label="Save"></button>
+        <button class="ui-btn-primary" pButton icon="fa fa-check" (click)="onSaveRoleClick()" label="Save"></button>
     </ng-template>
 </p-dialog>

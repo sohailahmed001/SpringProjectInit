@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppUser } from 'src/app/model/app-user.model';
 import { UserService } from 'src/app/services/user.service';
 import { UtilsService } from 'src/app/utils/utils.service';
@@ -13,7 +13,10 @@ export class EditUserComponent implements OnInit {
   user:AppUser = new AppUser();
   roleOptions: any[] = [];
 
-  constructor(private route: ActivatedRoute, private userService: UserService, private utilsService: UtilsService) { }
+  constructor(private route: ActivatedRoute,
+    private userService: UserService,
+    private utilsService: UtilsService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -49,6 +52,10 @@ export class EditUserComponent implements OnInit {
         this.utilsService.handleError(error);
       }
     });
+  }
+
+  onCancelClick(){
+    this.router.navigate(['search-user']);
   }
 
   onSaveClick(event: any) {

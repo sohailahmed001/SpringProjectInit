@@ -12,18 +12,19 @@
     </p-toolbar>
 
     <div class="grid-nogutter p-5">
-        <div class="col-6">
+        <div class="field col-6">
             <span class="p-float-label">
                 <input pInputText name="name" id="name" [(ngModel)]="role.name" />
                 <label>Name</label>
             </span>
         </div>
-    </div>
-    <div class="grid-nogutter p-5 pt-0">
-        <span class="p-float-label">
-            <p-multiSelect class="multi-select" name="Authorities" [options]="authorityOptions" [(ngModel)]="role.authorities" optionLabel="name" dataKey="id"></p-multiSelect>
-            <label>Authorities</label>
-        </span>
+        <br>
+        <div class="field col-6">
+            <span class="p-float-label">
+                <p-multiSelect  name="Authorities" [options]="authorityOptions" [(ngModel)]="role.authorities" optionLabel="name" dataKey="id"></p-multiSelect>
+                <label>Authorities</label>
+            </span>
+        </div>
     </div>
 
     <p-progressSpinner *ngIf="showLoader" ></p-progressSpinner>

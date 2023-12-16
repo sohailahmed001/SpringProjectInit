@@ -44,6 +44,8 @@ export class LoginComponent {
         },
         error: (er) => {
           this.utilsService.handleError(er);
+          console.log(er);
+          
           this.showLoader = false;
         }
       }

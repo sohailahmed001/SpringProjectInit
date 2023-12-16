@@ -30,6 +30,7 @@ export class RegistrationComponent {
       {
         next: (data) => {
           this.showLoader = false;
+          this.utilsService.handleSuccessMessage("User Registered Successfully");
           this.router.navigate(['login']);
         },
         error: (er) => {

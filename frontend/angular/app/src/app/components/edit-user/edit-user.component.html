@@ -1,23 +1,34 @@
 <div>
-    <header class="header border-bottom-2 surface-border m-0 p-2 mb-4">
-        <div class="grid">
-            <h3 class="p-2 m-0 col">Edit User</h3>
-            <button pButton class="btn btn-save ui-btn-primary col-2 col-offset-4 mr-4 mt-1" (click)="onSaveClick($event)" label="Save" icon="pi pi-save" type="button"></button>
+    <p-toolbar>
+        <div class="p-toolbar-group-start">
+            <label> Edit User</label>
         </div>
-    </header>
+        <div class="p-toolbar-group-end">
+            <button pButton label="Cancel" icon="fa fa-times" (click)="onCancelClick()"
+                class="mr-2 ui-btn-tertiary"></button>
+            <button pButton label="Save" icon="fa fa-save" (click)="onSaveClick($event)"
+                class="mr-2 ui-btn-primary"></button>
+        </div>
+    </p-toolbar>
 
-    <div class="ml-3">
+    <div class="p-5">
         <div class="field grid">
             <label for="username" class="col-2">Username*</label>
-            <input type="text" id="username" [(ngModel)]="user.username" required="required" name="username" class="col-4"/>
+            <div class="col-4">
+                <input pInputText type="text" id="username" [(ngModel)]="user.username" required="required" name="username" />
+            </div>
         </div>
         <div class="field grid">
             <label for="password" class="col-2">Password*</label>
-            <input type="password" id="password" [(ngModel)]="user.password" name="password" class="col-4"/>
+            <div class="col-4">
+                <input pInputText type="password" id="password" [(ngModel)]="user.password" name="password"/>
+            </div>
         </div>
         <div class="field grid">
             <label class="col-2">Roles</label>
-            <p-multiSelect class="multi-select" name="Roles" [options]="roleOptions" [(ngModel)]="user.roles" optionLabel="name" dataKey="id"></p-multiSelect>
+            <div class="col-4">
+                <p-multiSelect class="multi-select" name="Roles" [options]="roleOptions" [(ngModel)]="user.roles" optionLabel="name" dataKey="id"></p-multiSelect>
+            </div>
         </div>
     </div>
 </div>

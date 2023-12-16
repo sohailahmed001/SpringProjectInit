@@ -54,8 +54,8 @@ export class ManageAuthoritiesComponent implements OnInit {
     this.authTable.filterGlobal(targetValue.value, 'contains');
   }
 
-  onEditRoleClick(authority: any) {
-    this.selectedAuthority = authority;
+  onRowSelect(rowData){
+    this.selectedAuthority = rowData;
     this.showEditAuthorityPopup = true;
   }
 
