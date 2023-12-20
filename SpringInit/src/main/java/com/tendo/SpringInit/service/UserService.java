@@ -66,7 +66,6 @@ public class UserService implements UserDetailsService
         return addOrUpdateUser(newUser);
     }
 
-    //TODO
     public AppUser addOrUpdateUser(AppUser user)
     {
         if (user.getId() != null)

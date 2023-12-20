@@ -16,9 +16,10 @@ import java.util.*;
 public class JWTTokenGeneratorFilter extends OncePerRequestFilter
 {
 
-    private static  final   String    ISSUER     =   "SpringInit";
+    private static  final   String    ISSUER     =   SecurityConstants.JWT_ISSUER;
     private static  final   String    SUBJECT    =   "JWT Token";
     public  static  final   String    LOGIN_API  =   "/api/login";
+    public  static  final   String    REGISTER_API  =   "/api/register";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException

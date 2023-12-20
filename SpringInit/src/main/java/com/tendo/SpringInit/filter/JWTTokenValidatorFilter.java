@@ -51,7 +51,7 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException
     {
-        List<String>    paths   =   Arrays.asList(JWTTokenGeneratorFilter.LOGIN_API, "/api/register");
+        List<String>    paths   =   Arrays.asList(JWTTokenGeneratorFilter.LOGIN_API, JWTTokenGeneratorFilter.REGISTER_API);
         return paths.contains(request.getServletPath());
     }
 
